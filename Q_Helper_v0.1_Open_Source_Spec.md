@@ -1,12 +1,13 @@
 # Q Helper v0.1 — Open-Source Product & Engineering Specification
 
-**Owner / official publisher:** GV5 Technologies LLC  
+**Developer / official publisher:** GV5 Technologies LLC  
+**Initial copyright holder:** Dave Vigil (contributors retain copyright in their contributions)  
 **Status:** Implementation handoff / beta target  
 **Target platforms:** iOS 17+ and Android 10+ (API 29+)  
 **Implementation:** Flutter / Dart, Riverpod, Drift/SQLite  
 **Distribution:** Apple TestFlight and Google Play internal testing  
-**Repository:** Public GitHub repository under the GV5 organization (proposed: `gv5-technologies/q-helper`)  
-**Proposed code license:** Apache License 2.0, subject to GV5 approval before first commit  
+**Repository:** Public GitHub repository `dgvigil/qhelper` (decided; supersedes the earlier GV5-org proposal)  
+**Code license:** GNU GPL v3 with an App Store distribution exception (GPLv3 §7); see `LICENSE`, `APP-STORE-EXCEPTION.md`, ADR-0001. Supersedes the earlier Apache-2.0 proposal. **Legal review required** before external contributions or store distribution.  
 **Product:** Free; no ads, subscriptions, accounts, or telemetry SDKs
 
 ## 1. Purpose and product principles
@@ -133,11 +134,11 @@ Use stable UUIDs, explicit ordering, foreign keys, transactions for multi-row wr
 
 ## 7. Open-source governance and licensing
 
-1. Create the repository **public from the first commit** under GV5's organization. GV5 remains official publisher and final maintainer.
-2. Use Apache-2.0 for GV5-owned source if approved; add canonical `LICENSE` and accurate `NOTICE`. Copyright notices must reflect actual contributors and rights holders. Apache-2.0 permits commercial reuse and does **not** require forks to remain open source; revisit licensing **before** publication if copyleft is desired.
+1. The repository is **public** at `dgvigil/qhelper`. GV5 Technologies LLC is credited as developer and publisher (README, About, store listings); Dave Vigil is the initial copyright holder and maintainer.
+2. Use **GPLv3 plus an App Store exception** (`APP-STORE-EXCEPTION.md`, GPLv3 §7); canonical `LICENSE` and accurate `NOTICE`. Contributors retain copyright; no CLA or assignment. Contributions require DCO sign-off **and** explicit acceptance of GPLv3 plus the exception (DCO alone does not grant it). Dependencies must be GPLv3-compatible. Do not change the license or add a CLA without discussing with the maintainer. See `docs/legal/licensing-policy.md`.
 3. Keep code licensing separate from product trademarks, app icons, and third-party content. Do not claim Apache-2.0 covers F3 trademarks, Exicon, Q101, or community-authored materials. Track assets and their individual licenses in `docs/`.
 4. Add `README`, `CONTRIBUTING`, `CODE_OF_CONDUCT`, `SECURITY`, `CHANGELOG`, PR template, issue forms, CODEOWNERS, dependency update configuration, and ADRs.
-5. Start with maintainer-led governance. Require PR review, passing checks, and a contribution-rights attestation (e.g., DCO sign-off); no CLA by default.
+5. Start with maintainer-led governance. Require PR review, passing checks, DCO sign-off, and explicit acceptance of GPLv3 plus the App Store exception; no CLA.
 6. Publish local development instructions, testing commands, architecture overview, roadmap, and reproducible unsigned build instructions. Community contributors should not need Apple/Google credentials to build or test.
 7. Provide a private security contact or GitHub private vulnerability reporting; do not require security reports in public issues.
 8. No official F3 branding or copied exercise text without explicit written rights. A permission to use content in GV5's distributed app is **not automatically** a license for forks to redistribute it. Keep any future licensed content in a separately governed package/source with clear distribution rules.
