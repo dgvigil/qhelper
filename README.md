@@ -7,8 +7,15 @@ volunteer workout leaders (Qs). It helps a Q prepare a workout, track the
 overall finish time, manage intervals, and call audibles without losing the
 original plan. It supports the Q; it does not try to be the Q.
 
-**Developer and publisher:** GV5 Technologies LLC
-**Source repository and copyright holder (initial):** Dave Vigil
+**Developed and published by GV5 Technologies LLC.** GV5 is the developer and
+the official publisher of Q Helper's signed App Store and Google Play releases.
+
+**Copyright and ownership:** the source code is copyright (C) 2026 Dave Vigil
+and Q Helper contributors. Dave Vigil is the initial copyright holder and
+maintainer of this open-source repository; contributors keep the copyright in
+their contributions. GV5's role as developer and publisher does not change who
+holds copyright in the code. The "Q Helper" name, icon, and GV5 branding are not
+licensed under the GPL (see License below).
 
 > Q Helper is an independent community project developed by GV5 Technologies LLC and is not affiliated with or endorsed by F3 Nation.
 
