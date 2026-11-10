@@ -1625,6 +1625,61 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
         type: DriftSqlType.dateTime,
         requiredDuringInsert: true,
       );
+  static const VerificationMeta _workingPlanMeta = const VerificationMeta(
+    'workingPlan',
+  );
+  @override
+  late final GeneratedColumn<String> workingPlan = GeneratedColumn<String>(
+    'working_plan',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _activeSegmentIdMeta = const VerificationMeta(
+    'activeSegmentId',
+  );
+  @override
+  late final GeneratedColumn<String> activeSegmentId = GeneratedColumn<String>(
+    'active_segment_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _activeActivityIdMeta = const VerificationMeta(
+    'activeActivityId',
+  );
+  @override
+  late final GeneratedColumn<String> activeActivityId = GeneratedColumn<String>(
+    'active_activity_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _masterTimerStateMeta = const VerificationMeta(
+    'masterTimerState',
+  );
+  @override
+  late final GeneratedColumn<String> masterTimerState = GeneratedColumn<String>(
+    'master_timer_state',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _intervalTimerStateMeta =
+      const VerificationMeta('intervalTimerState');
+  @override
+  late final GeneratedColumn<String> intervalTimerState =
+      GeneratedColumn<String>(
+        'interval_timer_state',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1634,6 +1689,11 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
     deadlineAtWall,
     status,
     updatedAtWall,
+    workingPlan,
+    activeSegmentId,
+    activeActivityId,
+    masterTimerState,
+    intervalTimerState,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1713,6 +1773,53 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
     } else if (isInserting) {
       context.missing(_updatedAtWallMeta);
     }
+    if (data.containsKey('working_plan')) {
+      context.handle(
+        _workingPlanMeta,
+        workingPlan.isAcceptableOrUnknown(
+          data['working_plan']!,
+          _workingPlanMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_workingPlanMeta);
+    }
+    if (data.containsKey('active_segment_id')) {
+      context.handle(
+        _activeSegmentIdMeta,
+        activeSegmentId.isAcceptableOrUnknown(
+          data['active_segment_id']!,
+          _activeSegmentIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('active_activity_id')) {
+      context.handle(
+        _activeActivityIdMeta,
+        activeActivityId.isAcceptableOrUnknown(
+          data['active_activity_id']!,
+          _activeActivityIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('master_timer_state')) {
+      context.handle(
+        _masterTimerStateMeta,
+        masterTimerState.isAcceptableOrUnknown(
+          data['master_timer_state']!,
+          _masterTimerStateMeta,
+        ),
+      );
+    }
+    if (data.containsKey('interval_timer_state')) {
+      context.handle(
+        _intervalTimerStateMeta,
+        intervalTimerState.isAcceptableOrUnknown(
+          data['interval_timer_state']!,
+          _intervalTimerStateMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1750,6 +1857,26 @@ class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at_wall'],
       )!,
+      workingPlan: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}working_plan'],
+      )!,
+      activeSegmentId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}active_segment_id'],
+      ),
+      activeActivityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}active_activity_id'],
+      ),
+      masterTimerState: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}master_timer_state'],
+      ),
+      intervalTimerState: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}interval_timer_state'],
+      ),
     );
   }
 
@@ -1771,6 +1898,13 @@ class Session extends DataClass implements Insertable<Session> {
   final DateTime deadlineAtWall;
   final String status;
   final DateTime updatedAtWall;
+
+  /// Snapshot plus session-only edits (audibles), as JSON.
+  final String workingPlan;
+  final String? activeSegmentId;
+  final String? activeActivityId;
+  final String? masterTimerState;
+  final String? intervalTimerState;
   const Session({
     required this.id,
     this.sourcePlanId,
@@ -1779,6 +1913,11 @@ class Session extends DataClass implements Insertable<Session> {
     required this.deadlineAtWall,
     required this.status,
     required this.updatedAtWall,
+    required this.workingPlan,
+    this.activeSegmentId,
+    this.activeActivityId,
+    this.masterTimerState,
+    this.intervalTimerState,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1792,6 +1931,19 @@ class Session extends DataClass implements Insertable<Session> {
     map['deadline_at_wall'] = Variable<DateTime>(deadlineAtWall);
     map['status'] = Variable<String>(status);
     map['updated_at_wall'] = Variable<DateTime>(updatedAtWall);
+    map['working_plan'] = Variable<String>(workingPlan);
+    if (!nullToAbsent || activeSegmentId != null) {
+      map['active_segment_id'] = Variable<String>(activeSegmentId);
+    }
+    if (!nullToAbsent || activeActivityId != null) {
+      map['active_activity_id'] = Variable<String>(activeActivityId);
+    }
+    if (!nullToAbsent || masterTimerState != null) {
+      map['master_timer_state'] = Variable<String>(masterTimerState);
+    }
+    if (!nullToAbsent || intervalTimerState != null) {
+      map['interval_timer_state'] = Variable<String>(intervalTimerState);
+    }
     return map;
   }
 
@@ -1806,6 +1958,19 @@ class Session extends DataClass implements Insertable<Session> {
       deadlineAtWall: Value(deadlineAtWall),
       status: Value(status),
       updatedAtWall: Value(updatedAtWall),
+      workingPlan: Value(workingPlan),
+      activeSegmentId: activeSegmentId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(activeSegmentId),
+      activeActivityId: activeActivityId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(activeActivityId),
+      masterTimerState: masterTimerState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(masterTimerState),
+      intervalTimerState: intervalTimerState == null && nullToAbsent
+          ? const Value.absent()
+          : Value(intervalTimerState),
     );
   }
 
@@ -1822,6 +1987,13 @@ class Session extends DataClass implements Insertable<Session> {
       deadlineAtWall: serializer.fromJson<DateTime>(json['deadlineAtWall']),
       status: serializer.fromJson<String>(json['status']),
       updatedAtWall: serializer.fromJson<DateTime>(json['updatedAtWall']),
+      workingPlan: serializer.fromJson<String>(json['workingPlan']),
+      activeSegmentId: serializer.fromJson<String?>(json['activeSegmentId']),
+      activeActivityId: serializer.fromJson<String?>(json['activeActivityId']),
+      masterTimerState: serializer.fromJson<String?>(json['masterTimerState']),
+      intervalTimerState: serializer.fromJson<String?>(
+        json['intervalTimerState'],
+      ),
     );
   }
   @override
@@ -1835,6 +2007,11 @@ class Session extends DataClass implements Insertable<Session> {
       'deadlineAtWall': serializer.toJson<DateTime>(deadlineAtWall),
       'status': serializer.toJson<String>(status),
       'updatedAtWall': serializer.toJson<DateTime>(updatedAtWall),
+      'workingPlan': serializer.toJson<String>(workingPlan),
+      'activeSegmentId': serializer.toJson<String?>(activeSegmentId),
+      'activeActivityId': serializer.toJson<String?>(activeActivityId),
+      'masterTimerState': serializer.toJson<String?>(masterTimerState),
+      'intervalTimerState': serializer.toJson<String?>(intervalTimerState),
     };
   }
 
@@ -1846,6 +2023,11 @@ class Session extends DataClass implements Insertable<Session> {
     DateTime? deadlineAtWall,
     String? status,
     DateTime? updatedAtWall,
+    String? workingPlan,
+    Value<String?> activeSegmentId = const Value.absent(),
+    Value<String?> activeActivityId = const Value.absent(),
+    Value<String?> masterTimerState = const Value.absent(),
+    Value<String?> intervalTimerState = const Value.absent(),
   }) => Session(
     id: id ?? this.id,
     sourcePlanId: sourcePlanId.present ? sourcePlanId.value : this.sourcePlanId,
@@ -1854,6 +2036,19 @@ class Session extends DataClass implements Insertable<Session> {
     deadlineAtWall: deadlineAtWall ?? this.deadlineAtWall,
     status: status ?? this.status,
     updatedAtWall: updatedAtWall ?? this.updatedAtWall,
+    workingPlan: workingPlan ?? this.workingPlan,
+    activeSegmentId: activeSegmentId.present
+        ? activeSegmentId.value
+        : this.activeSegmentId,
+    activeActivityId: activeActivityId.present
+        ? activeActivityId.value
+        : this.activeActivityId,
+    masterTimerState: masterTimerState.present
+        ? masterTimerState.value
+        : this.masterTimerState,
+    intervalTimerState: intervalTimerState.present
+        ? intervalTimerState.value
+        : this.intervalTimerState,
   );
   Session copyWithCompanion(SessionsCompanion data) {
     return Session(
@@ -1874,6 +2069,21 @@ class Session extends DataClass implements Insertable<Session> {
       updatedAtWall: data.updatedAtWall.present
           ? data.updatedAtWall.value
           : this.updatedAtWall,
+      workingPlan: data.workingPlan.present
+          ? data.workingPlan.value
+          : this.workingPlan,
+      activeSegmentId: data.activeSegmentId.present
+          ? data.activeSegmentId.value
+          : this.activeSegmentId,
+      activeActivityId: data.activeActivityId.present
+          ? data.activeActivityId.value
+          : this.activeActivityId,
+      masterTimerState: data.masterTimerState.present
+          ? data.masterTimerState.value
+          : this.masterTimerState,
+      intervalTimerState: data.intervalTimerState.present
+          ? data.intervalTimerState.value
+          : this.intervalTimerState,
     );
   }
 
@@ -1886,7 +2096,12 @@ class Session extends DataClass implements Insertable<Session> {
           ..write('startedAtWall: $startedAtWall, ')
           ..write('deadlineAtWall: $deadlineAtWall, ')
           ..write('status: $status, ')
-          ..write('updatedAtWall: $updatedAtWall')
+          ..write('updatedAtWall: $updatedAtWall, ')
+          ..write('workingPlan: $workingPlan, ')
+          ..write('activeSegmentId: $activeSegmentId, ')
+          ..write('activeActivityId: $activeActivityId, ')
+          ..write('masterTimerState: $masterTimerState, ')
+          ..write('intervalTimerState: $intervalTimerState')
           ..write(')'))
         .toString();
   }
@@ -1900,6 +2115,11 @@ class Session extends DataClass implements Insertable<Session> {
     deadlineAtWall,
     status,
     updatedAtWall,
+    workingPlan,
+    activeSegmentId,
+    activeActivityId,
+    masterTimerState,
+    intervalTimerState,
   );
   @override
   bool operator ==(Object other) =>
@@ -1911,7 +2131,12 @@ class Session extends DataClass implements Insertable<Session> {
           other.startedAtWall == this.startedAtWall &&
           other.deadlineAtWall == this.deadlineAtWall &&
           other.status == this.status &&
-          other.updatedAtWall == this.updatedAtWall);
+          other.updatedAtWall == this.updatedAtWall &&
+          other.workingPlan == this.workingPlan &&
+          other.activeSegmentId == this.activeSegmentId &&
+          other.activeActivityId == this.activeActivityId &&
+          other.masterTimerState == this.masterTimerState &&
+          other.intervalTimerState == this.intervalTimerState);
 }
 
 class SessionsCompanion extends UpdateCompanion<Session> {
@@ -1922,6 +2147,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
   final Value<DateTime> deadlineAtWall;
   final Value<String> status;
   final Value<DateTime> updatedAtWall;
+  final Value<String> workingPlan;
+  final Value<String?> activeSegmentId;
+  final Value<String?> activeActivityId;
+  final Value<String?> masterTimerState;
+  final Value<String?> intervalTimerState;
   final Value<int> rowid;
   const SessionsCompanion({
     this.id = const Value.absent(),
@@ -1931,6 +2161,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     this.deadlineAtWall = const Value.absent(),
     this.status = const Value.absent(),
     this.updatedAtWall = const Value.absent(),
+    this.workingPlan = const Value.absent(),
+    this.activeSegmentId = const Value.absent(),
+    this.activeActivityId = const Value.absent(),
+    this.masterTimerState = const Value.absent(),
+    this.intervalTimerState = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SessionsCompanion.insert({
@@ -1941,13 +2176,19 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     required DateTime deadlineAtWall,
     required String status,
     required DateTime updatedAtWall,
+    required String workingPlan,
+    this.activeSegmentId = const Value.absent(),
+    this.activeActivityId = const Value.absent(),
+    this.masterTimerState = const Value.absent(),
+    this.intervalTimerState = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        planSnapshot = Value(planSnapshot),
        startedAtWall = Value(startedAtWall),
        deadlineAtWall = Value(deadlineAtWall),
        status = Value(status),
-       updatedAtWall = Value(updatedAtWall);
+       updatedAtWall = Value(updatedAtWall),
+       workingPlan = Value(workingPlan);
   static Insertable<Session> custom({
     Expression<String>? id,
     Expression<String>? sourcePlanId,
@@ -1956,6 +2197,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     Expression<DateTime>? deadlineAtWall,
     Expression<String>? status,
     Expression<DateTime>? updatedAtWall,
+    Expression<String>? workingPlan,
+    Expression<String>? activeSegmentId,
+    Expression<String>? activeActivityId,
+    Expression<String>? masterTimerState,
+    Expression<String>? intervalTimerState,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1966,6 +2212,12 @@ class SessionsCompanion extends UpdateCompanion<Session> {
       if (deadlineAtWall != null) 'deadline_at_wall': deadlineAtWall,
       if (status != null) 'status': status,
       if (updatedAtWall != null) 'updated_at_wall': updatedAtWall,
+      if (workingPlan != null) 'working_plan': workingPlan,
+      if (activeSegmentId != null) 'active_segment_id': activeSegmentId,
+      if (activeActivityId != null) 'active_activity_id': activeActivityId,
+      if (masterTimerState != null) 'master_timer_state': masterTimerState,
+      if (intervalTimerState != null)
+        'interval_timer_state': intervalTimerState,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1978,6 +2230,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     Value<DateTime>? deadlineAtWall,
     Value<String>? status,
     Value<DateTime>? updatedAtWall,
+    Value<String>? workingPlan,
+    Value<String?>? activeSegmentId,
+    Value<String?>? activeActivityId,
+    Value<String?>? masterTimerState,
+    Value<String?>? intervalTimerState,
     Value<int>? rowid,
   }) {
     return SessionsCompanion(
@@ -1988,6 +2245,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
       deadlineAtWall: deadlineAtWall ?? this.deadlineAtWall,
       status: status ?? this.status,
       updatedAtWall: updatedAtWall ?? this.updatedAtWall,
+      workingPlan: workingPlan ?? this.workingPlan,
+      activeSegmentId: activeSegmentId ?? this.activeSegmentId,
+      activeActivityId: activeActivityId ?? this.activeActivityId,
+      masterTimerState: masterTimerState ?? this.masterTimerState,
+      intervalTimerState: intervalTimerState ?? this.intervalTimerState,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2016,6 +2278,21 @@ class SessionsCompanion extends UpdateCompanion<Session> {
     if (updatedAtWall.present) {
       map['updated_at_wall'] = Variable<DateTime>(updatedAtWall.value);
     }
+    if (workingPlan.present) {
+      map['working_plan'] = Variable<String>(workingPlan.value);
+    }
+    if (activeSegmentId.present) {
+      map['active_segment_id'] = Variable<String>(activeSegmentId.value);
+    }
+    if (activeActivityId.present) {
+      map['active_activity_id'] = Variable<String>(activeActivityId.value);
+    }
+    if (masterTimerState.present) {
+      map['master_timer_state'] = Variable<String>(masterTimerState.value);
+    }
+    if (intervalTimerState.present) {
+      map['interval_timer_state'] = Variable<String>(intervalTimerState.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -2032,6 +2309,11 @@ class SessionsCompanion extends UpdateCompanion<Session> {
           ..write('deadlineAtWall: $deadlineAtWall, ')
           ..write('status: $status, ')
           ..write('updatedAtWall: $updatedAtWall, ')
+          ..write('workingPlan: $workingPlan, ')
+          ..write('activeSegmentId: $activeSegmentId, ')
+          ..write('activeActivityId: $activeActivityId, ')
+          ..write('masterTimerState: $masterTimerState, ')
+          ..write('intervalTimerState: $intervalTimerState, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3368,6 +3650,11 @@ typedef $$SessionsTableCreateCompanionBuilder = SessionsCompanion Function({
   required DateTime deadlineAtWall,
   required String status,
   required DateTime updatedAtWall,
+  required String workingPlan,
+  Value<String?> activeSegmentId,
+  Value<String?> activeActivityId,
+  Value<String?> masterTimerState,
+  Value<String?> intervalTimerState,
   Value<int> rowid,
 });
 typedef $$SessionsTableUpdateCompanionBuilder = SessionsCompanion Function({
@@ -3378,6 +3665,11 @@ typedef $$SessionsTableUpdateCompanionBuilder = SessionsCompanion Function({
   Value<DateTime> deadlineAtWall,
   Value<String> status,
   Value<DateTime> updatedAtWall,
+  Value<String> workingPlan,
+  Value<String?> activeSegmentId,
+  Value<String?> activeActivityId,
+  Value<String?> masterTimerState,
+  Value<String?> intervalTimerState,
   Value<int> rowid,
 });
 
@@ -3439,6 +3731,31 @@ class $$SessionsTableFilterComposer
 
   ColumnFilters<DateTime> get updatedAtWall => $composableBuilder(
     column: $table.updatedAtWall,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get workingPlan => $composableBuilder(
+    column: $table.workingPlan,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get activeSegmentId => $composableBuilder(
+    column: $table.activeSegmentId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get activeActivityId => $composableBuilder(
+    column: $table.activeActivityId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get masterTimerState => $composableBuilder(
+    column: $table.masterTimerState,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get intervalTimerState => $composableBuilder(
+    column: $table.intervalTimerState,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3505,6 +3822,31 @@ class $$SessionsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get workingPlan => $composableBuilder(
+    column: $table.workingPlan,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get activeSegmentId => $composableBuilder(
+    column: $table.activeSegmentId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get activeActivityId => $composableBuilder(
+    column: $table.activeActivityId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get masterTimerState => $composableBuilder(
+    column: $table.masterTimerState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get intervalTimerState => $composableBuilder(
+    column: $table.intervalTimerState,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$PlansTableOrderingComposer get sourcePlanId {
     final $$PlansTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -3561,6 +3903,31 @@ class $$SessionsTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAtWall => $composableBuilder(
     column: $table.updatedAtWall,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get workingPlan => $composableBuilder(
+    column: $table.workingPlan,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get activeSegmentId => $composableBuilder(
+    column: $table.activeSegmentId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get activeActivityId => $composableBuilder(
+    column: $table.activeActivityId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get masterTimerState => $composableBuilder(
+    column: $table.masterTimerState,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get intervalTimerState => $composableBuilder(
+    column: $table.intervalTimerState,
     builder: (column) => column,
   );
 
@@ -3623,6 +3990,11 @@ class $$SessionsTableTableManager
                 Value<DateTime> deadlineAtWall = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<DateTime> updatedAtWall = const Value.absent(),
+                Value<String> workingPlan = const Value.absent(),
+                Value<String?> activeSegmentId = const Value.absent(),
+                Value<String?> activeActivityId = const Value.absent(),
+                Value<String?> masterTimerState = const Value.absent(),
+                Value<String?> intervalTimerState = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SessionsCompanion(
                 id: id,
@@ -3632,6 +4004,11 @@ class $$SessionsTableTableManager
                 deadlineAtWall: deadlineAtWall,
                 status: status,
                 updatedAtWall: updatedAtWall,
+                workingPlan: workingPlan,
+                activeSegmentId: activeSegmentId,
+                activeActivityId: activeActivityId,
+                masterTimerState: masterTimerState,
+                intervalTimerState: intervalTimerState,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3643,6 +4020,11 @@ class $$SessionsTableTableManager
                 required DateTime deadlineAtWall,
                 required String status,
                 required DateTime updatedAtWall,
+                required String workingPlan,
+                Value<String?> activeSegmentId = const Value.absent(),
+                Value<String?> activeActivityId = const Value.absent(),
+                Value<String?> masterTimerState = const Value.absent(),
+                Value<String?> intervalTimerState = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SessionsCompanion.insert(
                 id: id,
@@ -3652,6 +4034,11 @@ class $$SessionsTableTableManager
                 deadlineAtWall: deadlineAtWall,
                 status: status,
                 updatedAtWall: updatedAtWall,
+                workingPlan: workingPlan,
+                activeSegmentId: activeSegmentId,
+                activeActivityId: activeActivityId,
+                masterTimerState: masterTimerState,
+                intervalTimerState: intervalTimerState,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

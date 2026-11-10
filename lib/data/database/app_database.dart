@@ -59,6 +59,13 @@ class Sessions extends Table {
   TextColumn get status => text()();
   DateTimeColumn get updatedAtWall => dateTime()();
 
+  /// Snapshot plus session-only edits (audibles), as JSON.
+  TextColumn get workingPlan => text()();
+  TextColumn get activeSegmentId => text().nullable()();
+  TextColumn get activeActivityId => text().nullable()();
+  TextColumn get masterTimerState => text().nullable()();
+  TextColumn get intervalTimerState => text().nullable()();
+
   @override
   Set<Column<Object>> get primaryKey => {id};
 }

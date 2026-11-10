@@ -176,4 +176,86 @@ void main() {
       );
     });
   });
+
+  group('live progress', () {
+    test('starts with a working copy equal to the snapshot', () async {
+      final session = await sessions.start('plan-1');
+      expect(session.workingPlan, session.planSnapshot);
+      expect(session.activeSegmentId, isNull);
+      expect(session.activeActivityId, isNull);
+      expect(session.masterTimerState, isNull);
+      expect(session.intervalTimerState, isNull);
+    });
+
+    test(
+      'saveProgress stores position, timers, and the working plan',
+      () async {
+        final started = await sessions.start('plan-1');
+        now = now.add(const Duration(minutes: 3));
+        final edited = started.workingPlan.copyWith(title: 'Called an audible');
+
+        final saved = await sessions.saveProgress(
+          started.id,
+          workingPlan: edited,
+          activeSegmentId: 'plan-1-seg-0',
+          activeActivityId: 'plan-1-act-1',
+          masterTimerState: {'durationMs': 2700000},
+          intervalTimerState: {'rounds': 3},
+        );
+
+        final loaded = (await sessions.get(started.id))!;
+        expect(loaded, saved);
+        expect(loaded.workingPlan.title, 'Called an audible');
+        expect(loaded.activeActivityId, 'plan-1-act-1');
+        expect(loaded.masterTimerState, {'durationMs': 2700000});
+        expect(loaded.intervalTimerState, {'rounds': 3});
+        expect(loaded.updatedAtWall, now);
+      },
+    );
+
+    test(
+      'saveProgress never changes the original snapshot or the plan',
+      () async {
+        final started = await sessions.start('plan-1');
+        final savedPlan = (await plans.get('plan-1'))!;
+        await sessions.saveProgress(
+          started.id,
+          workingPlan: started.workingPlan.copyWith(
+            title: 'Changed',
+            segments: const [],
+          ),
+        );
+        final loaded = (await sessions.get(started.id))!;
+        expect(loaded.planSnapshot, started.planSnapshot);
+        expect(await plans.get('plan-1'), savedPlan);
+      },
+    );
+
+    test('saveProgress can clear the interval and active ids', () async {
+      final started = await sessions.start('plan-1');
+      await sessions.saveProgress(
+        started.id,
+        workingPlan: started.workingPlan,
+        activeActivityId: 'plan-1-act-2',
+        intervalTimerState: {'rounds': 3},
+      );
+      await sessions.saveProgress(started.id, workingPlan: started.workingPlan);
+      final loaded = (await sessions.get(started.id))!;
+      expect(loaded.activeActivityId, isNull);
+      expect(loaded.intervalTimerState, isNull);
+    });
+
+    test('saveProgress refuses an ended or unknown session', () async {
+      final started = await sessions.start('plan-1');
+      await sessions.finish(started.id, SessionStatus.completed);
+      await expectLater(
+        sessions.saveProgress(started.id, workingPlan: started.workingPlan),
+        throwsA(isA<StateError>()),
+      );
+      await expectLater(
+        sessions.saveProgress('nope', workingPlan: started.workingPlan),
+        throwsA(isA<StateError>()),
+      );
+    });
+  });
 }

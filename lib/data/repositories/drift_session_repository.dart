@@ -41,6 +41,7 @@ class DriftSessionRepository implements SessionRepository {
         deadlineAtWall: now.add(Duration(seconds: plan.targetDurationSeconds)),
         status: SessionStatus.running,
         updatedAtWall: now,
+        workingPlan: plan,
       );
       await _db
           .into(_db.sessions)
@@ -53,6 +54,7 @@ class DriftSessionRepository implements SessionRepository {
               deadlineAtWall: session.deadlineAtWall,
               status: session.status.name,
               updatedAtWall: session.updatedAtWall,
+              workingPlan: jsonEncode(plan.toJson()),
             ),
           );
       return session;
@@ -103,6 +105,49 @@ class DriftSessionRepository implements SessionRepository {
     });
   }
 
+  @override
+  Future<WorkoutSession> saveProgress(
+    String id, {
+    required WorkoutPlan workingPlan,
+    String? activeSegmentId,
+    String? activeActivityId,
+    Map<String, Object?>? masterTimerState,
+    Map<String, Object?>? intervalTimerState,
+  }) async {
+    return _db.transaction(() async {
+      final current = await get(id);
+      if (current == null) throw StateError('Session $id does not exist');
+      if (current.status != SessionStatus.running) {
+        throw StateError('Session $id has ended');
+      }
+      final updated = current.withProgress(
+        workingPlan: workingPlan,
+        updatedAtWall: _clock.now().toUtc(),
+        activeSegmentId: activeSegmentId,
+        activeActivityId: activeActivityId,
+        masterTimerState: masterTimerState,
+        intervalTimerState: intervalTimerState,
+      );
+      await (_db.update(_db.sessions)..where((s) => s.id.equals(id))).write(
+        SessionsCompanion(
+          workingPlan: Value(jsonEncode(workingPlan.toJson())),
+          activeSegmentId: Value(activeSegmentId),
+          activeActivityId: Value(activeActivityId),
+          masterTimerState: Value(_encode(masterTimerState)),
+          intervalTimerState: Value(_encode(intervalTimerState)),
+          updatedAtWall: Value(updated.updatedAtWall),
+        ),
+      );
+      return updated;
+    });
+  }
+
+  static String? _encode(Map<String, Object?>? m) =>
+      m == null ? null : jsonEncode(m);
+
+  static Map<String, Object?>? _decode(String? s) =>
+      s == null ? null : jsonDecode(s) as Map<String, Object?>;
+
   WorkoutSession _toModel(Session row) {
     return WorkoutSession(
       id: row.id,
@@ -114,6 +159,13 @@ class DriftSessionRepository implements SessionRepository {
       deadlineAtWall: row.deadlineAtWall.toUtc(),
       status: SessionStatus.values.byName(row.status),
       updatedAtWall: row.updatedAtWall.toUtc(),
+      workingPlan: WorkoutPlan.fromJson(
+        jsonDecode(row.workingPlan) as Map<String, Object?>,
+      ),
+      activeSegmentId: row.activeSegmentId,
+      activeActivityId: row.activeActivityId,
+      masterTimerState: _decode(row.masterTimerState),
+      intervalTimerState: _decode(row.intervalTimerState),
     );
   }
 }
