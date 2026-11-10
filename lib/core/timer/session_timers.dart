@@ -39,6 +39,13 @@ class SessionTimers {
     return timer;
   }
 
+  /// Replaces any current interval with a new idle one, ready to start.
+  IntervalTimer prepareInterval(IntervalConfig config) {
+    final timer = IntervalTimer(config, _clock);
+    interval = timer;
+    return timer;
+  }
+
   void stopInterval() => interval = null;
 
   Map<String, Object?> toJson() => {

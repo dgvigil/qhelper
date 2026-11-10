@@ -26,7 +26,7 @@ unchanged. Nothing after v0.1 is implemented yet.
 | 0 | Public foundation | Repo, license, governance, CI, app skeleton | **Done** |
 | 1 | Domain and persistence | Plans saved locally, session snapshots | **Done** |
 | 2 | Timer engine | Reliable master countdown and intervals | **Done** |
-| 3 | Session state machine | Run, skip, edit, end, recover a workout | Not started |
+| 3 | Session state machine | Run, skip, edit, end, recover a workout | **Done** |
 | 4 | Weinke UI | Build, save, duplicate, share a workout | Not started |
 | 5 | Live UI and device adapters | Run a workout on a phone, offline | Not started |
 | 6 | Quality assurance | Tested on real devices | Needs maintainer |
@@ -128,6 +128,24 @@ Goal: the logic of leading a workout, independent of any screen.
 
 Exit gate: state-transition tests pass; double-taps cannot corrupt a session;
 the source plan is never modified.
+**Met** (177 tests passing, analyze clean).
+
+Notes from implementation:
+- `LiveSession` (`lib/domain/services/live_session.dart`) is pure Dart. It
+  saves position, working plan, and timer state after every change.
+- Controls: Next and Back move between activities and never wrap. Skip skips
+  the current interval phase. Interval start, pause, resume, and reset are
+  separate calls. A guarded `next(fromActivityId:)` lets the UI ignore a stale
+  or repeated tap.
+- The session keeps the original `planSnapshot` untouched and a `workingPlan`
+  that holds audibles, so the planned workout stays available later (for
+  example for a backblast).
+- Operations run one at a time in call order; a test with a deliberately slow
+  save fails if that serialization is removed.
+- After the session ends, navigation does nothing and edits throw.
+- On relaunch, `LiveSession.recover` returns the running session for a
+  Resume / End prompt. Ending uses `endEarly`; the `interrupted` status is
+  reserved and not set yet.
 
 ## Phase 4: Weinke UI
 

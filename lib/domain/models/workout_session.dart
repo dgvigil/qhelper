@@ -67,6 +67,7 @@ class WorkoutSession {
     SessionStatus? status,
     DateTime? updatedAtWall,
     String? sourcePlanId,
+    WorkoutPlan? workingPlan,
   }) {
     return WorkoutSession(
       id: id,
@@ -76,7 +77,7 @@ class WorkoutSession {
       deadlineAtWall: deadlineAtWall,
       status: status ?? this.status,
       updatedAtWall: updatedAtWall ?? this.updatedAtWall,
-      workingPlan: workingPlan,
+      workingPlan: workingPlan ?? this.workingPlan,
       activeSegmentId: activeSegmentId,
       activeActivityId: activeActivityId,
       masterTimerState: masterTimerState,

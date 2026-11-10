@@ -102,7 +102,10 @@ void main() {
     test('works for an empty segment', () {
       final plan = buildPlan();
       final empty = plan.copyWith(
-        segments: [plan.segments[0].copyWith(activities: []), plan.segments[1]],
+        segments: [
+          plan.segments[0].copyWith(activities: []),
+          plan.segments[1],
+        ],
       );
       final result = insertActivity(empty, 'plan-1-seg-0', newActivity());
       expect(names(result.segments[0].activities), ['Bear Crawl']);

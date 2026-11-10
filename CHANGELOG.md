@@ -18,6 +18,10 @@ All notable changes are documented here. Format based on
   work/rest/rounds interval timer with pause, resume, reset and phase skip,
   missed-cue handling, and JSON recovery of timer state.
 
+- Phase 3: live session state machine with Next/Back/Skip, session-only
+  edits (audibles), safe repeated end, saved progress, and recovery after
+  relaunch. The saved plan is never modified.
+
 ### Changed
 - Documentation only: roadmap now plans v0.2 (Three-F foundation) through v0.4,
   adds parallel research tracks and per-release exit criteria; competitive
