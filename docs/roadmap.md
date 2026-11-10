@@ -1,13 +1,23 @@
 # Q Helper roadmap: phases and milestones
 
-*Draft for discussion. Prepared 2026-11-10. Status reflects the repository on that date.*
+*Draft for discussion. Prepared 2026-11-10; revised 2026-11-10 for the Three-F
+direction. Status reflects the repository on that date.*
 
-Q Helper is a free, offline-first, open-source (GPLv3) companion for F3 Qs:
-plan the workout, run it with reliable timers, call audibles without losing the
-plan. Developed and published by GV5 Technologies LLC; initial copyright holder
-Dave Vigil. Independent community project, not affiliated with or endorsed by
-F3 Nation. Product detail lives in the [v0.1 spec](../Q_Helper_v0.1_Open_Source_Spec.md);
-market context in the [competitive analysis](competitive-analysis.md).
+Q Helper is a free, offline-first, open-source companion for F3 Qs supporting all
+three F3 pillars: **Fitness, Fellowship, and Faith**. v0.1 is fitness: plan the
+workout, run it with reliable timers, call audibles without losing the plan.
+Fellowship and faith arrive in v0.2. Licensed GPLv3 plus the
+[App Store exception](../APP-STORE-EXCEPTION.md); source at the public
+`dgvigil/qhelper` repository. Developed and published by GV5 Technologies LLC;
+initial copyright holder Dave Vigil. Independent community project, not
+affiliated with or endorsed by F3 Nation. Product detail lives in the
+[v0.1 spec](../Q_Helper_v0.1_Open_Source_Spec.md); market context in the
+[competitive analysis](competitive-analysis.md); content rules in the
+[content policy](legal/content-policy.md).
+
+This revision adds parallel research tracks and re-plans releases after v0.1
+(v0.2 to v0.4 plus a backlog). Phases 0-8 and the v0.1 release gate are
+unchanged. Nothing after v0.1 is implemented yet.
 
 ## At a glance
 
@@ -22,7 +32,15 @@ market context in the [competitive analysis](competitive-analysis.md).
 | 6 | Quality assurance | Tested on real devices | Needs maintainer |
 | 7 | Beta release | TestFlight and Google Play internal testing | Needs maintainer |
 | 8 | Field validation | 3+ Qs lead real workouts | Needs maintainers and Qs |
-| 9 | v0.2 (proposed) | Faith and fellowship, backblast, content | Proposed |
+
+| Release / track | Outcome | Status |
+|---|---|---|
+| v0.2 | Three-F foundation: daily encouragement, fellowship playbook | Planned |
+| v0.3 | Circle of Trust assistance and backblast drafting | Planned |
+| v0.4 | Apple Watch, Wear OS evaluation, Live Activities, hands-free | Planned |
+| Conditional | Official Exicon integration, only with documented F3 permission | Conditional |
+| Backlog | AI workout generation, community synchronization | Future |
+| P1, P2 | Competitive field testing; Three-F user discovery | Parallel, non-blocking |
 
 Phases 1-5 are software work and can proceed in order, each ending at an exit
 gate. Phases 6-8 need physical devices, store accounts, and real Qs.
@@ -156,37 +174,117 @@ Release-complete (from the spec): everything works offline; no critical bugs;
 public CI passes; signed builds install on both platforms; privacy policy and
 neutral store assets published; three real workouts completed.
 
-## Phase 9: v0.2 (proposed, not committed)
+### v0.1 product validation (informs v0.2; does not change the gate above)
 
-Ideas from the F3 discussion and the competitive analysis. None of this is in
-the v0.1 scope; priorities should come from Q feedback.
+| Check | Evidence |
+|---|---|
+| Qs would use it again | At least 3 observed Qs say they would lead their next workout with it |
+| Core promise holds | No audible, timer, or recovery failure reported in the observed workouts |
+| Next-release priorities | Feedback ranks fellowship, faith, and backblast needs against P2 discovery |
+
+## Parallel tracks (non-blocking)
+
+These start now and never gate engineering phases or any release.
+
+| Track | Activity | Output |
+|---|---|---|
+| P1 Competitive field testing | Install F3 Q Sheet and Q Master on real devices; run one scripted test (timer under lock, alarm with ringer off, audible edit, kill and relaunch); check Play Store for Android availability | Results recorded as **Confirmed** (with app version and date) in the [competitive analysis](competitive-analysis.md) |
+| P2 Three-F user discovery | 5-8 short interviews: Qs, fellowship (2nd F) organizers, a faith (3rd F) lead, and at least one PAX who is not religious. Ask about daily-content tone, opt-in expectations, fellowship planning pain, and backblast habits | Summary in `docs/research/` with no personal details; feeds v0.2 and v0.3 scope |
+
+## v0.2: Three-F foundation
+
+Goal: add the second and third Fs without weakening the offline, no-account
+core. Starts after v0.1 is released; discovery (P2) shapes details.
 
 | Milestone | What it delivers |
 |---|---|
-| M9.1 Daily faith and motivation | Offline rotating entries; Scripture, Motivation, or Off; public-domain sources with provenance |
-| M9.2 Fellowship playbook | Original checklists for coffeeteria, luncheon, holiday gathering, service project |
-| M9.3 Backblast | Draft and share from the Circle of Trust (competitors already ship it) |
-| M9.4 Licensed content | Exicon and workout library, only with written F3 permission |
-| M9.5 Later candidates | Apple Watch, Wear OS, hands-free cues, structured import/export |
+| V0.2.1 Daily encouragement | Offline, opt-in. Preference: Scripture, Motivation, Both, or Off. Default Off; never show scripture unprompted. Opt-in screen carries the disclosure: F3 does not support any one religion; the author follows Jesus, so content reflects that |
+| V0.2.2 Reviewed content collection | Small starter set (target 30-60 entries) with per-entry provenance and explicit license, reviewed under the [content policy](legal/content-policy.md) |
+| V0.2.3 Fellowship playbook | Original guides and checklists: coffeeteria, luncheon, holiday gathering, service project, 2nd-F check-in; shared as plain text through the existing share sheet |
+
+Non-goals: cloud backend, accounts, event registration, social features.
+
+Exit criteria (product validation):
+- Every shipped entry passes review and has complete provenance.
+- Works fully offline; Off hides all faith content.
+- Discovery participants (P2), including non-religious ones, find the opt-in and tone acceptable; no unresolved inclusivity objection.
+- At least 3 Qs use the playbook to plan a real event, or report why not.
+- No regression against v0.1 timer and session tests.
+
+## v0.3: Circle of Trust assistance and backblast
+
+| Milestone | What it delivers |
+|---|---|
+| V0.3.1 CoT assistance | Count-o-rama, name-o-rama, FNG marking, announcements and prayer-request notes |
+| V0.3.2 Backblast drafting | Draft from the session and CoT notes; edit; share as plain text |
+
+Exit criteria:
+- At least 3 Qs produce and post a real backblast using the app.
+- Drafting is faster than their usual method, by their own report.
+- All data stays on device unless the Q shares it.
+
+## Conditional: official Exicon integration
+
+Proceeds only when F3 permission is documented in `docs/legal/`. It is not a
+dependency of any release; if permission never arrives, nothing slips. Until
+then, no Exicon content, F3 logos, or Q101 text ships. If granted, revisit the
+independence wording and schedule it into the next open release.
+
+## v0.4: Wearables and hands-free
+
+| Milestone | What it delivers |
+|---|---|
+| V0.4.1 Apple Watch | Companion glance and controls for a running workout |
+| V0.4.2 Wear OS evaluation | Spike and written go/no-go before any build commitment |
+| V0.4.3 Live Activities | iOS lock-screen / Dynamic Island timer |
+| V0.4.4 Hands-free controls | Better cues and controls for phone-free leading |
+
+Exit criteria:
+- Watch and Live Activity timers match the phone to within one second after a 10-minute suspension.
+- At least 3 Qs lead a workout using hands-free controls and report whether the phone stayed in the pocket.
+- Wear OS: decision recorded with evidence, whether go or no-go.
+
+## Future backlog (unscheduled)
+
+- AI workout generation.
+- Community synchronization.
+- From the earlier spec list: offline search, favorites, more templates, first-Q guidance, deterministic suggested plans, cadence assistance, structured plan import/export.
+
+Each item needs its own discovery and exit criteria before scheduling.
 
 ## Gating items outside the code
 
 | Item | Owner | Blocks |
 |---|---|---|
 | Legal review of license exception and contribution terms | Maintainer | External contributions; Phase 7 |
-| F3 Nation / F3 Tech content-permission conversation | Maintainer | M9.4; shapes the independence notice |
+| F3 Nation / F3 Tech content-permission conversation | Maintainer | Official Exicon integration only; shapes the independence notice |
+| Content reviewers: scripture and quotes agreed (two family members); fellowship reviewer still open | Maintainer | v0.2 content release |
+| Recruit an Android beta tester | Maintainer | Phase 6 Android testing; Phase 7 Play internal test; Phase 8 |
+| Legal review of content licensing choices | Maintainer | v0.2 content release |
 | Apple Developer and Google Play accounts | Maintainer | Phase 7 |
 | GitHub repo settings (branch protection, secret scanning, private vulnerability reporting) | Maintainer | Public contributions |
 | Privacy policy and support URLs | Maintainer | Phases 5 (About) and 7 |
 | Physical test devices | Maintainer | Phase 6 |
 
-## Questions for reviewers
+## Maintainer decisions (2026-11-10)
 
-1. Is the v0.1 scope right for a first release, or is anything missing that a Q
-   would not use the app without?
-2. Should backblast move into v0.1, given both existing apps ship it?
-3. Should faith and fellowship content be in the main app, behind an opt-in
-   setting, or a separate add-on?
-4. Who should review the scripture selections and fellowship checklists?
-5. Android-first or both platforms at the same time for the beta?
-6. Anyone willing to be a beta Q on iPhone or Android?
+| Question | Decision |
+|---|---|
+| Is v0.1 the right first release? | Yes. v0.1 goes to TestFlight (and Play internal testing) for a small group of testers |
+| Backblast | Committed to match the other apps. Stays in v0.3 as already planned; the v0.1 scope and gate are not expanded. Moving it earlier would be a separate decision |
+| Faith content placement | In the main app, opt-in (default Off), with a disclaimer: F3 does not endorse any one religion; the author follows Jesus, so the scripture and quotations reflect that. See the [content policy](legal/content-policy.md) |
+| Scripture and quotation review | Two family members with long faith and leadership experience (the maintainer's brother and father) review them |
+| Platforms for the beta | Both iOS and Android together |
+| Beta testers | Maintainer (iPhone, later Apple Watch); the maintainer's brother (iPhone, F3 Q) |
+
+## Open questions
+
+1. **Android tester needed.** Nobody is recruited yet. Phase 6 Android device
+   testing, the Play internal test in Phase 7, and field validation on Android
+   (Phase 8) all depend on this. Recruit at least one Android user in an F3 group.
+2. Who can take part in Three-F discovery interviews (P2)? Include at least one
+   PAX who is not Christian, so the opt-in and disclaimer wording is tested
+   against people it is meant to respect.
+3. Who reviews fellowship playbook checklists (someone who has run a 2nd-F event)?
+4. Who reviews non-scripture quotations for accuracy of source, if not the
+   same two reviewers?

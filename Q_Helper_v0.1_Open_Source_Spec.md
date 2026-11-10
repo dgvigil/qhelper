@@ -210,9 +210,7 @@ Use stable UUIDs, explicit ordering, foreign keys, transactions for multi-row wr
 
 ## 12. Future roadmap (not v0.1 commitments)
 
-- **v0.2:** licensed Exicon integration, offline search, exercise favorites, more templates, first-Q guidance, deterministic suggested plans.
-- **v0.3:** iOS Live Activities, Apple Watch, possible Wear OS, improved hands-free cues, cadence assistance.
-- **v0.4:** structured plan import/export, community sharing, backblast drafts, optional official F3 integration.
+Post-v0.1 releases are planned in [docs/roadmap.md](docs/roadmap.md), which supersedes the earlier v0.2-v0.4 list here. None of it changes the v0.1 scope or release gate.
 
 Prioritize based on real Q feedback and licensing terms, not feature count.
 

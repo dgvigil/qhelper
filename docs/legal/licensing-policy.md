@@ -17,6 +17,7 @@
 | Official repository | `github.com/dgvigil/qhelper` (public) |
 | Trademarks, icon, branding | Not covered by the GPL or the exception |
 | F3 content | No F3 logos, Exicon, or Q101 text without explicit written rights |
+| Scripture, quotations, community content | Governed separately by the [content policy](content-policy.md); the GPL covers code only |
 
 ## Copyright notice
 
