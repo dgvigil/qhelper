@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:q_helper/domain/models/workout_activity.dart';
+import 'package:q_helper/domain/models/workout_plan.dart';
+import 'package:q_helper/domain/models/workout_segment.dart';
 import 'package:q_helper/domain/services/plan_edits.dart';
 
 import '../../fixtures/plans.dart';
@@ -135,6 +137,74 @@ void main() {
 
     test('throws for an unknown activity', () {
       expect(() => removeActivity(buildPlan(), 'missing'), throwsStateError);
+    });
+  });
+
+  group('segment edits', () {
+    WorkoutSegment seg(String id, String title) => WorkoutSegment(
+      id: id,
+      planId: 'plan-1',
+      title: title,
+      sortOrder: 99,
+      activities: const [],
+    );
+
+    List<String> titles(WorkoutPlan p) => [for (final s in p.segments) s.title];
+
+    test('addSegment appends and numbers segments', () {
+      final result = addSegment(buildPlan(), seg('s-new', 'Mary'));
+      expect(titles(result), ['Warm-O-Rama', 'The Thang', 'Mary']);
+      expect(result.segments.map((s) => s.sortOrder), [0, 1, 2]);
+      expect(result.segments.last.planId, 'plan-1');
+    });
+
+    test('addSegment can insert at an index', () {
+      final result = addSegment(buildPlan(), seg('s-new', 'Mary'), index: 1);
+      expect(titles(result), ['Warm-O-Rama', 'Mary', 'The Thang']);
+      expect(result.segments.map((s) => s.sortOrder), [0, 1, 2]);
+    });
+
+    test('renameSegment changes only that title', () {
+      final result = renameSegment(buildPlan(), 'plan-1-seg-1', 'Main Event');
+      expect(titles(result), ['Warm-O-Rama', 'Main Event']);
+      expect(result.segments[1].activities, hasLength(1));
+    });
+
+    test('removeSegment drops it with its activities and renumbers', () {
+      final result = removeSegment(buildPlan(), 'plan-1-seg-0');
+      expect(titles(result), ['The Thang']);
+      expect(result.segments.single.sortOrder, 0);
+    });
+
+    test('moveSegment reorders and renumbers', () {
+      final plan = addSegment(buildPlan(), seg('s3', 'Mary'));
+      final result = moveSegment(plan, 2, 0);
+      expect(titles(result), ['Mary', 'Warm-O-Rama', 'The Thang']);
+      expect(result.segments.map((s) => s.sortOrder), [0, 1, 2]);
+    });
+
+    test('moveSegment to the same index changes nothing', () {
+      expect(moveSegment(buildPlan(), 1, 1), buildPlan());
+    });
+
+    test('segment helpers throw for unknown ids and bad indexes', () {
+      expect(() => renameSegment(buildPlan(), 'x', 'y'), throwsStateError);
+      expect(() => removeSegment(buildPlan(), 'x'), throwsStateError);
+      expect(() => moveSegment(buildPlan(), 5, 0), throwsRangeError);
+    });
+
+    test('moveActivity reorders within a segment and renumbers', () {
+      final result = moveActivity(buildPlan(), 'plan-1-seg-0', 0, 1);
+      expect(names(result.segments[0].activities), ['Mosey', 'SSH']);
+      expect(result.segments[0].activities.map((a) => a.sortOrder), [0, 1]);
+    });
+
+    test('moveActivity throws for an unknown segment or bad index', () {
+      expect(() => moveActivity(buildPlan(), 'x', 0, 1), throwsStateError);
+      expect(
+        () => moveActivity(buildPlan(), 'plan-1-seg-0', 0, 9),
+        throwsRangeError,
+      );
     });
   });
 }

@@ -80,3 +80,69 @@ WorkoutPlan removeActivity(WorkoutPlan plan, String activityId) {
   if (!found) throw StateError('Activity $activityId not found');
   return result;
 }
+
+List<WorkoutSegment> _renumberSegments(String planId, List<WorkoutSegment> l) =>
+    [
+      for (var i = 0; i < l.length; i++)
+        l[i].copyWith(planId: planId, sortOrder: i),
+    ];
+
+/// Inserts [segment] at [index] (default: the end) and renumbers segments.
+WorkoutPlan addSegment(WorkoutPlan plan, WorkoutSegment segment, {int? index}) {
+  final ordered = _orderedSegments(plan);
+  ordered.insert(index ?? ordered.length, segment);
+  return plan.copyWith(segments: _renumberSegments(plan.id, ordered));
+}
+
+WorkoutPlan renameSegment(WorkoutPlan plan, String segmentId, String title) {
+  if (!plan.segments.any((s) => s.id == segmentId)) {
+    throw StateError('Segment $segmentId not found');
+  }
+  return _mapSegments(
+    plan,
+    (s) => s.id == segmentId ? s.copyWith(title: title) : s,
+  );
+}
+
+/// Removes a segment and its activities, then renumbers the rest.
+WorkoutPlan removeSegment(WorkoutPlan plan, String segmentId) {
+  if (!plan.segments.any((s) => s.id == segmentId)) {
+    throw StateError('Segment $segmentId not found');
+  }
+  final remaining = [
+    for (final s in _orderedSegments(plan))
+      if (s.id != segmentId) s,
+  ];
+  return plan.copyWith(segments: _renumberSegments(plan.id, remaining));
+}
+
+/// Moves the segment at [oldIndex] so it ends up at [newIndex].
+WorkoutPlan moveSegment(WorkoutPlan plan, int oldIndex, int newIndex) {
+  final ordered = _orderedSegments(plan);
+  RangeError.checkValidIndex(oldIndex, ordered, 'oldIndex');
+  RangeError.checkValidIndex(newIndex, ordered, 'newIndex');
+  final moved = ordered.removeAt(oldIndex);
+  ordered.insert(newIndex, moved);
+  return plan.copyWith(segments: _renumberSegments(plan.id, ordered));
+}
+
+/// Moves an activity within its segment so it ends up at [newIndex].
+WorkoutPlan moveActivity(
+  WorkoutPlan plan,
+  String segmentId,
+  int oldIndex,
+  int newIndex,
+) {
+  if (!plan.segments.any((s) => s.id == segmentId)) {
+    throw StateError('Segment $segmentId not found');
+  }
+  return _mapSegments(plan, (segment) {
+    if (segment.id != segmentId) return segment;
+    final ordered = _orderedActivities(segment);
+    RangeError.checkValidIndex(oldIndex, ordered, 'oldIndex');
+    RangeError.checkValidIndex(newIndex, ordered, 'newIndex');
+    final moved = ordered.removeAt(oldIndex);
+    ordered.insert(newIndex, moved);
+    return segment.copyWith(activities: _renumber(segment.id, ordered));
+  });
+}
