@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:q_helper/app/providers.dart';
 import 'package:q_helper/domain/models/workout_plan.dart';
+import 'package:q_helper/domain/models/workout_session.dart';
+import 'package:q_helper/domain/services/live_session.dart';
+import 'package:q_helper/features/live_session/end_workout_dialog.dart';
 import 'package:q_helper/domain/services/plan_text_export.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -45,8 +48,16 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
         ),
-        data: (list) =>
-            list.isEmpty ? const _EmptyState() : _PlanList(plans: list),
+        data: (list) => Column(
+          children: [
+            const _ResumeBanner(),
+            Expanded(
+              child: list.isEmpty
+                  ? const _EmptyState()
+                  : _PlanList(plans: list),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -111,7 +122,7 @@ String planSummary(WorkoutPlan plan) {
       '$activities ${activities == 1 ? 'activity' : 'activities'}';
 }
 
-enum _PlanAction { duplicate, share, delete }
+enum _PlanAction { start, duplicate, share, delete }
 
 class _PlanTile extends ConsumerWidget {
   const _PlanTile({required this.plan});
@@ -130,6 +141,7 @@ class _PlanTile extends ConsumerWidget {
           tooltip: 'Actions for ${plan.title}',
           onSelected: (action) => _onAction(context, ref, action),
           itemBuilder: (_) => const [
+            PopupMenuItem(value: _PlanAction.start, child: Text('Start')),
             PopupMenuItem(
               value: _PlanAction.duplicate,
               child: Text('Duplicate'),
@@ -148,6 +160,9 @@ class _PlanTile extends ConsumerWidget {
     _PlanAction action,
   ) async {
     switch (action) {
+      case _PlanAction.start:
+        await context.push('/live/${plan.id}');
+        ref.invalidate(activeSessionProvider);
       case _PlanAction.duplicate:
         await ref.read(planListProvider.notifier).duplicate(plan.id);
       case _PlanAction.share:
@@ -176,5 +191,69 @@ class _PlanTile extends ConsumerWidget {
           await ref.read(planListProvider.notifier).delete(plan.id);
         }
     }
+  }
+}
+
+/// Offers Resume / End for a workout still running after a relaunch or after
+/// leaving the live screen.
+class _ResumeBanner extends ConsumerWidget {
+  const _ResumeBanner();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final active = ref.watch(activeSessionProvider).value;
+    if (active == null) return const SizedBox.shrink();
+    return Card(
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      color: Theme.of(context).colorScheme.primaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Workout in progress',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Text(active.workingPlan.title),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                FilledButton(
+                  onPressed: () async {
+                    await context.push('/live/resume');
+                    ref.invalidate(activeSessionProvider);
+                  },
+                  child: const Text('Resume'),
+                ),
+                const SizedBox(width: 12),
+                OutlinedButton(
+                  onPressed: () => _end(context, ref),
+                  child: const Text('End workout'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _end(BuildContext context, WidgetRef ref) async {
+    final status = await showEndWorkoutDialog(context);
+    if (status == null) return;
+    final live = await LiveSession.recover(
+      sessions: ref.read(sessionRepositoryProvider),
+      clock: ref.read(appClockProvider),
+    );
+    if (live != null) {
+      if (status == SessionStatus.completed) {
+        await live.complete();
+      } else {
+        await live.endEarly();
+      }
+    }
+    await ref.read(endNotificationCoordinatorProvider).sessionEnded();
+    ref.invalidate(activeSessionProvider);
   }
 }

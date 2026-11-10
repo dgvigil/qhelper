@@ -211,24 +211,35 @@ class _BuilderScreenState extends ConsumerState<BuilderScreen> {
 
   // ---- save, share, leave ------------------------------------------------
 
-  Future<void> _save() async {
+  /// Validates and saves. Returns false (after showing why) if it cannot.
+  Future<bool> _save({bool quiet = false}) async {
     final plan = _plan!;
     setState(() => _showErrors = true);
     if (plan.validate().isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Fix the highlighted problems first.')),
       );
-      return;
+      return false;
     }
     final saved = await ref.read(planListProvider.notifier).save(plan);
-    if (!mounted) return;
+    if (!mounted) return false;
     setState(() {
       _plan = saved;
       _baseline = saved;
       _showErrors = false;
     });
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Saved')));
+    if (!quiet) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Saved')));
+    }
+    return true;
+  }
+
+  /// Saves, then opens the live screen for this workout.
+  Future<void> _start() async {
+    if (!await _save(quiet: true) || !mounted) return;
+    await context.push('/live/${_plan!.id}');
+    ref.invalidate(activeSessionProvider);
   }
 
   Future<void> _share() async {
@@ -319,9 +330,14 @@ class _BuilderScreenState extends ConsumerState<BuilderScreen> {
               onPressed: _share,
             ),
             IconButton(
+              tooltip: 'Start workout',
+              icon: const Icon(Icons.play_arrow),
+              onPressed: _start,
+            ),
+            IconButton(
               tooltip: 'Save',
               icon: const Icon(Icons.check),
-              onPressed: _save,
+              onPressed: () => _save(),
             ),
           ],
         ),

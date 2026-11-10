@@ -1,7 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:q_helper/app/services/share_service.dart';
+import 'package:q_helper/core/clock/app_clock.dart';
+import 'package:q_helper/core/platform/cue_service.dart';
+import 'package:q_helper/core/platform/end_notification_service.dart';
+import 'package:q_helper/core/platform/wakelock_service.dart';
+import 'package:q_helper/domain/models/app_settings.dart';
 import 'package:q_helper/domain/models/workout_plan.dart';
+import 'package:q_helper/domain/models/workout_session.dart';
 import 'package:q_helper/domain/repositories/plan_repository.dart';
+import 'package:q_helper/domain/repositories/session_repository.dart';
+import 'package:q_helper/domain/repositories/settings_repository.dart';
+import 'package:q_helper/domain/services/end_notification_coordinator.dart';
 import 'package:uuid/uuid.dart';
 
 /// Must be overridden at the app root with a real repository.
@@ -57,3 +66,68 @@ class PlanListNotifier extends AsyncNotifier<List<WorkoutPlan>> {
     return saved;
   }
 }
+
+/// Must be overridden at the app root with a real repository.
+final sessionRepositoryProvider = Provider<SessionRepository>(
+  (ref) => throw UnimplementedError('sessionRepositoryProvider not overridden'),
+);
+
+/// Must be overridden at the app root with a real repository.
+final settingsRepositoryProvider = Provider<SettingsRepository>(
+  (ref) =>
+      throw UnimplementedError('settingsRepositoryProvider not overridden'),
+);
+
+final appClockProvider = Provider<AppClock>((ref) => SystemClock());
+
+/// Fires often enough to repaint countdowns. It only triggers repaints; time
+/// is always recomputed from the clock.
+final tickStreamProvider = Provider<Stream<void>>(
+  (ref) =>
+      Stream<void>.periodic(const Duration(milliseconds: 250))
+          .asBroadcastStream(),
+);
+
+final settingsProvider = AsyncNotifierProvider<SettingsNotifier, AppSettings>(
+  SettingsNotifier.new,
+);
+
+class SettingsNotifier extends AsyncNotifier<AppSettings> {
+  SettingsRepository get _repo => ref.read(settingsRepositoryProvider);
+
+  @override
+  Future<AppSettings> build() => _repo.load();
+
+  Future<void> save(AppSettings settings) async {
+    state = AsyncData(settings);
+    await _repo.save(settings);
+  }
+}
+
+final cueServiceProvider = Provider<CueService>(
+  (ref) => SystemCueService(
+    settings: () => ref.read(settingsProvider).value ?? const AppSettings(),
+  ),
+);
+
+final wakelockServiceProvider = Provider<WakelockService>(
+  (ref) => const WakelockPlusService(),
+);
+
+final endNotificationServiceProvider = Provider<EndNotificationService>(
+  (ref) => LocalEndNotificationService(),
+);
+
+final endNotificationCoordinatorProvider = Provider<EndNotificationCoordinator>(
+  (ref) => EndNotificationCoordinator(
+    service: ref.watch(endNotificationServiceProvider),
+    loadSettings: () => ref.read(settingsProvider.future),
+    saveSettings: (s) => ref.read(settingsProvider.notifier).save(s),
+    now: () => ref.read(appClockProvider).now,
+  ),
+);
+
+/// The workout currently running, if any (offered as Resume on Home).
+final activeSessionProvider = FutureProvider<WorkoutSession?>(
+  (ref) => ref.watch(sessionRepositoryProvider).findActive(),
+);
