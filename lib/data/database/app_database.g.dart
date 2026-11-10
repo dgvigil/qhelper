@@ -1541,12 +1541,510 @@ class ActivitiesCompanion extends UpdateCompanion<Activity> {
   }
 }
 
+class $SessionsTable extends Sessions with TableInfo<$SessionsTable, Session> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourcePlanIdMeta = const VerificationMeta(
+    'sourcePlanId',
+  );
+  @override
+  late final GeneratedColumn<String> sourcePlanId = GeneratedColumn<String>(
+    'source_plan_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES plans (id) ON DELETE SET NULL',
+    ),
+  );
+  static const VerificationMeta _planSnapshotMeta = const VerificationMeta(
+    'planSnapshot',
+  );
+  @override
+  late final GeneratedColumn<String> planSnapshot = GeneratedColumn<String>(
+    'plan_snapshot',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startedAtWallMeta = const VerificationMeta(
+    'startedAtWall',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startedAtWall =
+      GeneratedColumn<DateTime>(
+        'started_at_wall',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _deadlineAtWallMeta = const VerificationMeta(
+    'deadlineAtWall',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deadlineAtWall =
+      GeneratedColumn<DateTime>(
+        'deadline_at_wall',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtWallMeta = const VerificationMeta(
+    'updatedAtWall',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAtWall =
+      GeneratedColumn<DateTime>(
+        'updated_at_wall',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    sourcePlanId,
+    planSnapshot,
+    startedAtWall,
+    deadlineAtWall,
+    status,
+    updatedAtWall,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sessions';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Session> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('source_plan_id')) {
+      context.handle(
+        _sourcePlanIdMeta,
+        sourcePlanId.isAcceptableOrUnknown(
+          data['source_plan_id']!,
+          _sourcePlanIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('plan_snapshot')) {
+      context.handle(
+        _planSnapshotMeta,
+        planSnapshot.isAcceptableOrUnknown(
+          data['plan_snapshot']!,
+          _planSnapshotMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_planSnapshotMeta);
+    }
+    if (data.containsKey('started_at_wall')) {
+      context.handle(
+        _startedAtWallMeta,
+        startedAtWall.isAcceptableOrUnknown(
+          data['started_at_wall']!,
+          _startedAtWallMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_startedAtWallMeta);
+    }
+    if (data.containsKey('deadline_at_wall')) {
+      context.handle(
+        _deadlineAtWallMeta,
+        deadlineAtWall.isAcceptableOrUnknown(
+          data['deadline_at_wall']!,
+          _deadlineAtWallMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_deadlineAtWallMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('updated_at_wall')) {
+      context.handle(
+        _updatedAtWallMeta,
+        updatedAtWall.isAcceptableOrUnknown(
+          data['updated_at_wall']!,
+          _updatedAtWallMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtWallMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Session map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Session(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      sourcePlanId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}source_plan_id'],
+      ),
+      planSnapshot: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}plan_snapshot'],
+      )!,
+      startedAtWall: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}started_at_wall'],
+      )!,
+      deadlineAtWall: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deadline_at_wall'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      updatedAtWall: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at_wall'],
+      )!,
+    );
+  }
+
+  @override
+  $SessionsTable createAlias(String alias) {
+    return $SessionsTable(attachedDatabase, alias);
+  }
+}
+
+class Session extends DataClass implements Insertable<Session> {
+  final String id;
+
+  /// Cleared (not deleted) when the saved plan is deleted.
+  final String? sourcePlanId;
+
+  /// The plan as JSON, copied at start.
+  final String planSnapshot;
+  final DateTime startedAtWall;
+  final DateTime deadlineAtWall;
+  final String status;
+  final DateTime updatedAtWall;
+  const Session({
+    required this.id,
+    this.sourcePlanId,
+    required this.planSnapshot,
+    required this.startedAtWall,
+    required this.deadlineAtWall,
+    required this.status,
+    required this.updatedAtWall,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || sourcePlanId != null) {
+      map['source_plan_id'] = Variable<String>(sourcePlanId);
+    }
+    map['plan_snapshot'] = Variable<String>(planSnapshot);
+    map['started_at_wall'] = Variable<DateTime>(startedAtWall);
+    map['deadline_at_wall'] = Variable<DateTime>(deadlineAtWall);
+    map['status'] = Variable<String>(status);
+    map['updated_at_wall'] = Variable<DateTime>(updatedAtWall);
+    return map;
+  }
+
+  SessionsCompanion toCompanion(bool nullToAbsent) {
+    return SessionsCompanion(
+      id: Value(id),
+      sourcePlanId: sourcePlanId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sourcePlanId),
+      planSnapshot: Value(planSnapshot),
+      startedAtWall: Value(startedAtWall),
+      deadlineAtWall: Value(deadlineAtWall),
+      status: Value(status),
+      updatedAtWall: Value(updatedAtWall),
+    );
+  }
+
+  factory Session.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Session(
+      id: serializer.fromJson<String>(json['id']),
+      sourcePlanId: serializer.fromJson<String?>(json['sourcePlanId']),
+      planSnapshot: serializer.fromJson<String>(json['planSnapshot']),
+      startedAtWall: serializer.fromJson<DateTime>(json['startedAtWall']),
+      deadlineAtWall: serializer.fromJson<DateTime>(json['deadlineAtWall']),
+      status: serializer.fromJson<String>(json['status']),
+      updatedAtWall: serializer.fromJson<DateTime>(json['updatedAtWall']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'sourcePlanId': serializer.toJson<String?>(sourcePlanId),
+      'planSnapshot': serializer.toJson<String>(planSnapshot),
+      'startedAtWall': serializer.toJson<DateTime>(startedAtWall),
+      'deadlineAtWall': serializer.toJson<DateTime>(deadlineAtWall),
+      'status': serializer.toJson<String>(status),
+      'updatedAtWall': serializer.toJson<DateTime>(updatedAtWall),
+    };
+  }
+
+  Session copyWith({
+    String? id,
+    Value<String?> sourcePlanId = const Value.absent(),
+    String? planSnapshot,
+    DateTime? startedAtWall,
+    DateTime? deadlineAtWall,
+    String? status,
+    DateTime? updatedAtWall,
+  }) => Session(
+    id: id ?? this.id,
+    sourcePlanId: sourcePlanId.present ? sourcePlanId.value : this.sourcePlanId,
+    planSnapshot: planSnapshot ?? this.planSnapshot,
+    startedAtWall: startedAtWall ?? this.startedAtWall,
+    deadlineAtWall: deadlineAtWall ?? this.deadlineAtWall,
+    status: status ?? this.status,
+    updatedAtWall: updatedAtWall ?? this.updatedAtWall,
+  );
+  Session copyWithCompanion(SessionsCompanion data) {
+    return Session(
+      id: data.id.present ? data.id.value : this.id,
+      sourcePlanId: data.sourcePlanId.present
+          ? data.sourcePlanId.value
+          : this.sourcePlanId,
+      planSnapshot: data.planSnapshot.present
+          ? data.planSnapshot.value
+          : this.planSnapshot,
+      startedAtWall: data.startedAtWall.present
+          ? data.startedAtWall.value
+          : this.startedAtWall,
+      deadlineAtWall: data.deadlineAtWall.present
+          ? data.deadlineAtWall.value
+          : this.deadlineAtWall,
+      status: data.status.present ? data.status.value : this.status,
+      updatedAtWall: data.updatedAtWall.present
+          ? data.updatedAtWall.value
+          : this.updatedAtWall,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Session(')
+          ..write('id: $id, ')
+          ..write('sourcePlanId: $sourcePlanId, ')
+          ..write('planSnapshot: $planSnapshot, ')
+          ..write('startedAtWall: $startedAtWall, ')
+          ..write('deadlineAtWall: $deadlineAtWall, ')
+          ..write('status: $status, ')
+          ..write('updatedAtWall: $updatedAtWall')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    sourcePlanId,
+    planSnapshot,
+    startedAtWall,
+    deadlineAtWall,
+    status,
+    updatedAtWall,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Session &&
+          other.id == this.id &&
+          other.sourcePlanId == this.sourcePlanId &&
+          other.planSnapshot == this.planSnapshot &&
+          other.startedAtWall == this.startedAtWall &&
+          other.deadlineAtWall == this.deadlineAtWall &&
+          other.status == this.status &&
+          other.updatedAtWall == this.updatedAtWall);
+}
+
+class SessionsCompanion extends UpdateCompanion<Session> {
+  final Value<String> id;
+  final Value<String?> sourcePlanId;
+  final Value<String> planSnapshot;
+  final Value<DateTime> startedAtWall;
+  final Value<DateTime> deadlineAtWall;
+  final Value<String> status;
+  final Value<DateTime> updatedAtWall;
+  final Value<int> rowid;
+  const SessionsCompanion({
+    this.id = const Value.absent(),
+    this.sourcePlanId = const Value.absent(),
+    this.planSnapshot = const Value.absent(),
+    this.startedAtWall = const Value.absent(),
+    this.deadlineAtWall = const Value.absent(),
+    this.status = const Value.absent(),
+    this.updatedAtWall = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SessionsCompanion.insert({
+    required String id,
+    this.sourcePlanId = const Value.absent(),
+    required String planSnapshot,
+    required DateTime startedAtWall,
+    required DateTime deadlineAtWall,
+    required String status,
+    required DateTime updatedAtWall,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       planSnapshot = Value(planSnapshot),
+       startedAtWall = Value(startedAtWall),
+       deadlineAtWall = Value(deadlineAtWall),
+       status = Value(status),
+       updatedAtWall = Value(updatedAtWall);
+  static Insertable<Session> custom({
+    Expression<String>? id,
+    Expression<String>? sourcePlanId,
+    Expression<String>? planSnapshot,
+    Expression<DateTime>? startedAtWall,
+    Expression<DateTime>? deadlineAtWall,
+    Expression<String>? status,
+    Expression<DateTime>? updatedAtWall,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (sourcePlanId != null) 'source_plan_id': sourcePlanId,
+      if (planSnapshot != null) 'plan_snapshot': planSnapshot,
+      if (startedAtWall != null) 'started_at_wall': startedAtWall,
+      if (deadlineAtWall != null) 'deadline_at_wall': deadlineAtWall,
+      if (status != null) 'status': status,
+      if (updatedAtWall != null) 'updated_at_wall': updatedAtWall,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SessionsCompanion copyWith({
+    Value<String>? id,
+    Value<String?>? sourcePlanId,
+    Value<String>? planSnapshot,
+    Value<DateTime>? startedAtWall,
+    Value<DateTime>? deadlineAtWall,
+    Value<String>? status,
+    Value<DateTime>? updatedAtWall,
+    Value<int>? rowid,
+  }) {
+    return SessionsCompanion(
+      id: id ?? this.id,
+      sourcePlanId: sourcePlanId ?? this.sourcePlanId,
+      planSnapshot: planSnapshot ?? this.planSnapshot,
+      startedAtWall: startedAtWall ?? this.startedAtWall,
+      deadlineAtWall: deadlineAtWall ?? this.deadlineAtWall,
+      status: status ?? this.status,
+      updatedAtWall: updatedAtWall ?? this.updatedAtWall,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (sourcePlanId.present) {
+      map['source_plan_id'] = Variable<String>(sourcePlanId.value);
+    }
+    if (planSnapshot.present) {
+      map['plan_snapshot'] = Variable<String>(planSnapshot.value);
+    }
+    if (startedAtWall.present) {
+      map['started_at_wall'] = Variable<DateTime>(startedAtWall.value);
+    }
+    if (deadlineAtWall.present) {
+      map['deadline_at_wall'] = Variable<DateTime>(deadlineAtWall.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (updatedAtWall.present) {
+      map['updated_at_wall'] = Variable<DateTime>(updatedAtWall.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SessionsCompanion(')
+          ..write('id: $id, ')
+          ..write('sourcePlanId: $sourcePlanId, ')
+          ..write('planSnapshot: $planSnapshot, ')
+          ..write('startedAtWall: $startedAtWall, ')
+          ..write('deadlineAtWall: $deadlineAtWall, ')
+          ..write('status: $status, ')
+          ..write('updatedAtWall: $updatedAtWall, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $PlansTable plans = $PlansTable(this);
   late final $SegmentsTable segments = $SegmentsTable(this);
   late final $ActivitiesTable activities = $ActivitiesTable(this);
+  late final $SessionsTable sessions = $SessionsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1555,6 +2053,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     plans,
     segments,
     activities,
+    sessions,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -1571,6 +2070,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('activities', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'plans',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('sessions', kind: UpdateKind.update)],
     ),
   ]);
   @override
@@ -1617,6 +2123,25 @@ final class $$PlansTableReferences
     ).filter((f) => f.planId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_segmentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$SessionsTable, List<Session>> _sessionsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.sessions,
+    aliasName: 'plans__id__sessions__source_plan_id',
+  );
+
+  $$SessionsTableProcessedTableManager get sessionsRefs {
+    final manager = $$SessionsTableTableManager(
+      $_db,
+      $_db.sessions,
+    ).filter((f) => f.sourcePlanId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_sessionsRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -1682,6 +2207,31 @@ class $$PlansTableFilterComposer extends Composer<_$AppDatabase, $PlansTable> {
           }) => $$SegmentsTableFilterComposer(
             $db: $db,
             $table: $db.segments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> sessionsRefs(
+    Expression<bool> Function($$SessionsTableFilterComposer f) f,
+  ) {
+    final $$SessionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.sessions,
+      getReferencedColumn: (t) => t.sourcePlanId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SessionsTableFilterComposer(
+            $db: $db,
+            $table: $db.sessions,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -1797,6 +2347,31 @@ class $$PlansTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> sessionsRefs<T extends Object>(
+    Expression<T> Function($$SessionsTableAnnotationComposer a) f,
+  ) {
+    final $$SessionsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.sessions,
+      getReferencedColumn: (t) => t.sourcePlanId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SessionsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.sessions,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$PlansTableTableManager
@@ -1812,7 +2387,7 @@ class $$PlansTableTableManager
           $$PlansTableUpdateCompanionBuilder,
           (Plan, $$PlansTableReferences),
           Plan,
-          PrefetchHooks Function({bool segmentsRefs})
+          PrefetchHooks Function({bool segmentsRefs, bool sessionsRefs})
         > {
   $$PlansTableTableManager(_$AppDatabase db, $PlansTable table)
     : super(
@@ -1873,33 +2448,61 @@ class $$PlansTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({segmentsRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (segmentsRefs) db.segments],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (segmentsRefs)
-                    await $_getPrefetchedDataByColumns<
-                      Plan,
-                      $PlansTable,
-                      Segment,
-                      $SegmentsTable
-                    >(
-                      currentTable: table,
-                      referencedTable: $$PlansTableReferences
-                          ._segmentsRefsTable(db),
-                      managerFromTypedResult: (p0) =>
-                          $$PlansTableReferences(db, table, p0).segmentsRefs,
-                      currentColumn: 'id',
-                      referencedColumn: 'plan_id',
-                      typedResults: items,
-                    ),
-                ];
+          prefetchHooksCallback:
+              ({segmentsRefs = false, sessionsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (segmentsRefs) db.segments,
+                    if (sessionsRefs) db.sessions,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (segmentsRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Plan,
+                          $PlansTable,
+                          Segment,
+                          $SegmentsTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$PlansTableReferences
+                              ._segmentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$PlansTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).segmentsRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'plan_id',
+                          typedResults: items,
+                        ),
+                      if (sessionsRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Plan,
+                          $PlansTable,
+                          Session,
+                          $SessionsTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$PlansTableReferences
+                              ._sessionsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$PlansTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).sessionsRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'source_plan_id',
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -1916,7 +2519,7 @@ typedef $$PlansTableProcessedTableManager =
       $$PlansTableUpdateCompanionBuilder,
       (Plan, $$PlansTableReferences),
       Plan,
-      PrefetchHooks Function({bool segmentsRefs})
+      PrefetchHooks Function({bool segmentsRefs, bool sessionsRefs})
     >;
 typedef $$SegmentsTableCreateCompanionBuilder = SegmentsCompanion Function({
   required String id,
@@ -2757,6 +3360,365 @@ typedef $$ActivitiesTableProcessedTableManager =
       Activity,
       PrefetchHooks Function({bool segmentId})
     >;
+typedef $$SessionsTableCreateCompanionBuilder = SessionsCompanion Function({
+  required String id,
+  Value<String?> sourcePlanId,
+  required String planSnapshot,
+  required DateTime startedAtWall,
+  required DateTime deadlineAtWall,
+  required String status,
+  required DateTime updatedAtWall,
+  Value<int> rowid,
+});
+typedef $$SessionsTableUpdateCompanionBuilder = SessionsCompanion Function({
+  Value<String> id,
+  Value<String?> sourcePlanId,
+  Value<String> planSnapshot,
+  Value<DateTime> startedAtWall,
+  Value<DateTime> deadlineAtWall,
+  Value<String> status,
+  Value<DateTime> updatedAtWall,
+  Value<int> rowid,
+});
+
+final class $$SessionsTableReferences
+    extends BaseReferences<_$AppDatabase, $SessionsTable, Session> {
+  $$SessionsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $PlansTable _sourcePlanIdTable(_$AppDatabase db) =>
+      db.plans.createAlias('sessions__source_plan_id__plans__id');
+
+  $$PlansTableProcessedTableManager? get sourcePlanId {
+    final $_column = $_itemColumn<String>('source_plan_id');
+    if ($_column == null) return null;
+    final manager = $$PlansTableTableManager(
+      $_db,
+      $_db.plans,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_sourcePlanIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$SessionsTableFilterComposer
+    extends Composer<_$AppDatabase, $SessionsTable> {
+  $$SessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get planSnapshot => $composableBuilder(
+    column: $table.planSnapshot,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startedAtWall => $composableBuilder(
+    column: $table.startedAtWall,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deadlineAtWall => $composableBuilder(
+    column: $table.deadlineAtWall,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAtWall => $composableBuilder(
+    column: $table.updatedAtWall,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$PlansTableFilterComposer get sourcePlanId {
+    final $$PlansTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourcePlanId,
+      referencedTable: $db.plans,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PlansTableFilterComposer(
+            $db: $db,
+            $table: $db.plans,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SessionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $SessionsTable> {
+  $$SessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get planSnapshot => $composableBuilder(
+    column: $table.planSnapshot,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startedAtWall => $composableBuilder(
+    column: $table.startedAtWall,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deadlineAtWall => $composableBuilder(
+    column: $table.deadlineAtWall,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAtWall => $composableBuilder(
+    column: $table.updatedAtWall,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$PlansTableOrderingComposer get sourcePlanId {
+    final $$PlansTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourcePlanId,
+      referencedTable: $db.plans,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PlansTableOrderingComposer(
+            $db: $db,
+            $table: $db.plans,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SessionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $SessionsTable> {
+  $$SessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get planSnapshot => $composableBuilder(
+    column: $table.planSnapshot,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get startedAtWall => $composableBuilder(
+    column: $table.startedAtWall,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get deadlineAtWall => $composableBuilder(
+    column: $table.deadlineAtWall,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAtWall => $composableBuilder(
+    column: $table.updatedAtWall,
+    builder: (column) => column,
+  );
+
+  $$PlansTableAnnotationComposer get sourcePlanId {
+    final $$PlansTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.sourcePlanId,
+      referencedTable: $db.plans,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PlansTableAnnotationComposer(
+            $db: $db,
+            $table: $db.plans,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$SessionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $SessionsTable,
+          Session,
+          $$SessionsTableFilterComposer,
+          $$SessionsTableOrderingComposer,
+          $$SessionsTableAnnotationComposer,
+          $$SessionsTableCreateCompanionBuilder,
+          $$SessionsTableUpdateCompanionBuilder,
+          (Session, $$SessionsTableReferences),
+          Session,
+          PrefetchHooks Function({bool sourcePlanId})
+        > {
+  $$SessionsTableTableManager(_$AppDatabase db, $SessionsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$SessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$SessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$SessionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String?> sourcePlanId = const Value.absent(),
+                Value<String> planSnapshot = const Value.absent(),
+                Value<DateTime> startedAtWall = const Value.absent(),
+                Value<DateTime> deadlineAtWall = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<DateTime> updatedAtWall = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => SessionsCompanion(
+                id: id,
+                sourcePlanId: sourcePlanId,
+                planSnapshot: planSnapshot,
+                startedAtWall: startedAtWall,
+                deadlineAtWall: deadlineAtWall,
+                status: status,
+                updatedAtWall: updatedAtWall,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                Value<String?> sourcePlanId = const Value.absent(),
+                required String planSnapshot,
+                required DateTime startedAtWall,
+                required DateTime deadlineAtWall,
+                required String status,
+                required DateTime updatedAtWall,
+                Value<int> rowid = const Value.absent(),
+              }) => SessionsCompanion.insert(
+                id: id,
+                sourcePlanId: sourcePlanId,
+                planSnapshot: planSnapshot,
+                startedAtWall: startedAtWall,
+                deadlineAtWall: deadlineAtWall,
+                status: status,
+                updatedAtWall: updatedAtWall,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SessionsTable, Session>(table),
+                  $$SessionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({sourcePlanId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (sourcePlanId) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.sourcePlanId,
+                        referencedTable: $$SessionsTableReferences
+                            ._sourcePlanIdTable(db),
+                        referencedColumn: $$SessionsTableReferences
+                            ._sourcePlanIdTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$SessionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $SessionsTable,
+      Session,
+      $$SessionsTableFilterComposer,
+      $$SessionsTableOrderingComposer,
+      $$SessionsTableAnnotationComposer,
+      $$SessionsTableCreateCompanionBuilder,
+      $$SessionsTableUpdateCompanionBuilder,
+      (Session, $$SessionsTableReferences),
+      Session,
+      PrefetchHooks Function({bool sourcePlanId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2767,4 +3729,6 @@ class $AppDatabaseManager {
       $$SegmentsTableTableManager(_db, _db.segments);
   $$ActivitiesTableTableManager get activities =>
       $$ActivitiesTableTableManager(_db, _db.activities);
+  $$SessionsTableTableManager get sessions =>
+      $$SessionsTableTableManager(_db, _db.sessions);
 }

@@ -24,7 +24,7 @@ unchanged. Nothing after v0.1 is implemented yet.
 | # | Phase | Outcome | Status |
 |---|---|---|---|
 | 0 | Public foundation | Repo, license, governance, CI, app skeleton | **Done** |
-| 1 | Domain and persistence | Plans saved locally, session snapshots | Not started |
+| 1 | Domain and persistence | Plans saved locally, session snapshots | **Done** |
 | 2 | Timer engine | Reliable master countdown and intervals | Not started |
 | 3 | Session state machine | Run, skip, edit, end, recover a workout | Not started |
 | 4 | Weinke UI | Build, save, duplicate, share a workout | Not started |
@@ -76,6 +76,17 @@ Goal: workouts live in a local database and a running session has its own copy.
 
 Exit gate: automated tests for CRUD, ordering, validation, and snapshot
 immutability pass. Migration tests begin once a second schema version exists.
+**Met** (61 tests passing, analyze clean).
+
+Notes from implementation:
+- The session record holds the plan snapshot, deadline, and status. Timer
+  state (Phase 2) and active segment/activity (Phase 3) columns are added with
+  those phases. The schema is unreleased, so this needs no migration.
+- Generated Drift code (`*.g.dart`) is committed because CI does not run
+  `build_runner`. Regenerate with `fvm dart run build_runner build`.
+- Dates are stored as text to keep millisecond precision (`build.yaml`).
+- The app does not open the database yet; wiring through Riverpod arrives
+  with the UI phases.
 
 ## Phase 2: Timer engine
 

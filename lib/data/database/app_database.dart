@@ -45,7 +45,25 @@ class Activities extends Table {
   Set<Column<Object>> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [Plans, Segments, Activities])
+class Sessions extends Table {
+  TextColumn get id => text()();
+
+  /// Cleared (not deleted) when the saved plan is deleted.
+  TextColumn get sourcePlanId =>
+      text().nullable().references(Plans, #id, onDelete: KeyAction.setNull)();
+
+  /// The plan as JSON, copied at start.
+  TextColumn get planSnapshot => text()();
+  DateTimeColumn get startedAtWall => dateTime()();
+  DateTimeColumn get deadlineAtWall => dateTime()();
+  TextColumn get status => text()();
+  DateTimeColumn get updatedAtWall => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}
+
+@DriftDatabase(tables: [Plans, Segments, Activities, Sessions])
 class AppDatabase extends _$AppDatabase {
   AppDatabase(super.e);
 
