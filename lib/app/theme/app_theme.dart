@@ -10,6 +10,13 @@ abstract final class AppTheme {
       brightness: Brightness.dark,
     ),
     visualDensity: VisualDensity.standard,
+    materialTapTargetSize: MaterialTapTargetSize.padded,
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(minimumSize: const Size(64, 56)),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(minimumSize: const Size(64, 56)),
+    ),
   );
 
   static ThemeData get light => ThemeData(

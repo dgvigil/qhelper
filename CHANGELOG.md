@@ -22,6 +22,11 @@ All notable changes are documented here. Format based on
   edits (audibles), safe repeated end, saved progress, and recovery after
   relaunch. The saved plan is never modified.
 
+- Phase 4: Home list with duplicate, share and delete; workout builder with
+  title, duration, segments, activities, reordering, validation and
+  unsaved-changes protection; 45 and 60 minute structural templates;
+  plain-text sharing; exercise name suggestions from the Q's own workouts.
+
 ### Changed
 - Documentation only: roadmap now plans v0.2 (Three-F foundation) through v0.4,
   adds parallel research tracks and per-release exit criteria; competitive

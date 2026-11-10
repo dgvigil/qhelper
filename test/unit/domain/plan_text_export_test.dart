@@ -24,7 +24,7 @@ The Thang
     test('omits the description line when there is none', () {
       final plan = buildPlan();
       final noDesc = plan.copyWith(description: '');
-      expect(planToText(noDesc).split('\n')[2], '');
+      expect(planToText(noDesc), isNot(contains('\n\n\n')));
       expect(planToText(noDesc), isNot(contains('Legs')));
     });
 

@@ -27,7 +27,7 @@ unchanged. Nothing after v0.1 is implemented yet.
 | 1 | Domain and persistence | Plans saved locally, session snapshots | **Done** |
 | 2 | Timer engine | Reliable master countdown and intervals | **Done** |
 | 3 | Session state machine | Run, skip, edit, end, recover a workout | **Done** |
-| 4 | Weinke UI | Build, save, duplicate, share a workout | Not started |
+| 4 | Weinke UI | Build, save, duplicate, share a workout | **Done** (device check pending) |
 | 5 | Live UI and device adapters | Run a workout on a phone, offline | Not started |
 | 6 | Quality assurance | Tested on real devices | Needs maintainer |
 | 7 | Beta release | TestFlight and Google Play internal testing | Needs maintainer |
@@ -162,6 +162,25 @@ Goal: a Q can prepare a complete workout without a developer.
 
 Exit gate: a non-developer can build, save, reopen, duplicate, and share a
 complete workout.
+**Met in automated tests** (acceptance widget test plus 80+ widget and unit
+tests). Not yet confirmed by a person on a real device; that belongs to
+Phase 6 and the field work in Phase 8.
+
+Notes from implementation:
+- Screens: Home (list, empty state, duplicate, share, delete with
+  confirmation), Builder, and Templates. The app now opens the on-device
+  database at launch (`lib/main.dart`).
+- Reordering uses Move up / Move down menu items instead of drag handles. They
+  work with screen readers and large text, and are easy to test.
+- Templates hold only segment names and times (45 and 60 minutes), with no
+  exercise text. A blank new workout uses the same four segments without times.
+- Name suggestions (M4.6) come only from the Q's own saved workouts and the
+  workout being edited.
+- Widget tests use an in-memory repository. The real database path (create,
+  save, relaunch, reopen) is covered by repository tests now and by the
+  integration tests in Phase 5.6.
+- Starting a workout from the builder or list arrives with the live screen in
+  Phase 5.
 
 ## Phase 5: Live UI and device adapters
 

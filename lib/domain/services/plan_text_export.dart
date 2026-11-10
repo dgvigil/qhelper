@@ -4,10 +4,11 @@ import 'package:q_helper/domain/services/plan_edits.dart';
 
 /// Readable plain text for sharing a workout plan.
 String planToText(WorkoutPlan plan) {
+  final description = (plan.description ?? '').trim();
   final lines = <String>[
     plan.title,
     'Target duration: ${formatSeconds(plan.targetDurationSeconds)}',
-    (plan.description ?? '').trim(),
+    if (description.isNotEmpty) description,
   ];
 
   final segments = [...plan.segments]
@@ -27,7 +28,7 @@ String planToText(WorkoutPlan plan) {
     }
     for (var i = 0; i < activities.length; i++) {
       final a = activities[i];
-      lines.add('${i + 1}. ${a.name}: ${_details(a.details)}');
+      lines.add('${i + 1}. ${a.name}: ${describeActivityDetails(a.details)}');
       final notes = (a.notes ?? '').trim();
       if (notes.isNotEmpty) lines.add('   Notes: $notes');
     }
@@ -35,7 +36,8 @@ String planToText(WorkoutPlan plan) {
   return lines.join('\n');
 }
 
-String _details(ActivityDetails d) => switch (d) {
+/// One-line description of an activity's type-specific fields.
+String describeActivityDetails(ActivityDetails d) => switch (d) {
   RepsDetails(:final repetitions) =>
     '$repetitions ${repetitions == 1 ? 'rep' : 'reps'}',
   TimedDetails(:final workSeconds, :final restSeconds, :final rounds) =>
