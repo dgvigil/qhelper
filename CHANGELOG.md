@@ -14,6 +14,10 @@ All notable changes are documented here. Format based on
   repository (create, read, update, delete, duplicate), and session snapshots
   that are unaffected by later plan edits or deletion.
 
+- Phase 2: injectable clock, fixed-deadline master countdown with overtime,
+  work/rest/rounds interval timer with pause, resume, reset and phase skip,
+  missed-cue handling, and JSON recovery of timer state.
+
 ### Changed
 - Documentation only: roadmap now plans v0.2 (Three-F foundation) through v0.4,
   adds parallel research tracks and per-release exit criteria; competitive

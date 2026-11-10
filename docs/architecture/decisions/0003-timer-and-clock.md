@@ -23,6 +23,14 @@
 - Next/Back/Skip stop the current interval. Returning to an activity, or editing
   a timed activity, resets its interval.
 
+## Implementation notes (Phase 2)
+
+- Elapsed time since an anchor is the larger of the monotonic and wall-clock
+  differences. This keeps timers correct across device sleep (monotonic time
+  may stop) and prevents a backward clock change from adding time.
+- A cue plays only if its phase change is observed within a 2 second grace
+  period; later transitions are reported as missed and never replayed.
+
 ## Known limitations (to document for users)
 
 - Wall-clock recovery after process death is affected by manual device clock

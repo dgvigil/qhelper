@@ -25,7 +25,7 @@ unchanged. Nothing after v0.1 is implemented yet.
 |---|---|---|---|
 | 0 | Public foundation | Repo, license, governance, CI, app skeleton | **Done** |
 | 1 | Domain and persistence | Plans saved locally, session snapshots | **Done** |
-| 2 | Timer engine | Reliable master countdown and intervals | Not started |
+| 2 | Timer engine | Reliable master countdown and intervals | **Done** |
 | 3 | Session state machine | Run, skip, edit, end, recover a workout | Not started |
 | 4 | Weinke UI | Build, save, duplicate, share a workout | Not started |
 | 5 | Live UI and device adapters | Run a workout on a phone, offline | Not started |
@@ -101,6 +101,19 @@ Goal: timing that stays right when the phone sleeps, locks, or the app closes.
 
 Exit gate: deterministic test matrix passes, including a simulated 10-minute
 suspension and master/interval independence.
+**Met** (111 tests passing, analyze clean).
+
+Notes from implementation:
+- Timers are plain Dart in `lib/core/` and take an injected `AppClock`
+  (wall and monotonic time). Tests use `FakeClock` to model suspension, device
+  clock changes, and process restarts.
+- Elapsed time is the larger of the monotonic and wall differences. A backward
+  clock change cannot add time; a forward change shortens a countdown (a
+  documented limitation, covered by a test).
+- Cues: a phase change observed within 2 seconds plays its cue; anything later
+  is counted as a missed transition and never replayed.
+- Timers serialize to JSON for recovery after process death. Writing that state
+  into the session record is part of Phase 3 (M3.4).
 
 ## Phase 3: Session state machine
 
