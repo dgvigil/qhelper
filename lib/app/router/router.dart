@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:q_helper/features/builder/builder_screen.dart';
 import 'package:q_helper/features/home/home_screen.dart';
 import 'package:q_helper/features/live_session/live_screen.dart';
+import 'package:q_helper/features/quick_timer/quick_timer_screen.dart';
+import 'package:q_helper/features/settings/settings_screen.dart';
 import 'package:q_helper/features/templates/templates_screen.dart';
 
 GoRouter buildRouter() => GoRouter(
@@ -13,6 +15,8 @@ GoRouter buildRouter() => GoRouter(
       path: '/live/:planId',
       builder: (_, state) => LiveScreen(planId: state.pathParameters['planId']),
     ),
+    GoRoute(path: '/quick', builder: (_, _) => const QuickTimerScreen()),
+    GoRoute(path: '/settings', builder: (_, _) => const SettingsScreen()),
     GoRoute(path: '/templates', builder: (_, _) => const TemplatesScreen()),
     GoRoute(
       path: '/builder/:id',

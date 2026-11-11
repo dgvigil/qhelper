@@ -64,9 +64,11 @@ class _BuilderScreenState extends ConsumerState<BuilderScreen> {
       final newId = ref.read(idGeneratorProvider);
       final now = ref.read(nowProvider)();
       final minutes = widget.templateMinutes;
+      final defaultMinutes = (await ref.read(settingsProvider.future))
+          .defaultMinutes;
       plan = minutes != null && templateMinutes.contains(minutes)
           ? templatePlan(minutes, newId: newId, now: now)
-          : blankPlan(newId: newId, now: now);
+          : blankPlan(newId: newId, now: now, minutes: defaultMinutes);
     } else {
       plan = await ref.read(planRepositoryProvider).get(id);
     }

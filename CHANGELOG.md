@@ -27,6 +27,12 @@ All notable changes are documented here. Format based on
   unsaved-changes protection; 45 and 60 minute structural templates;
   plain-text sharing; exercise name suggestions from the Q's own workouts.
 
+- Phase 5: live workout screen (master countdown with overtime, current and
+  next activity, Back/Next, interval panel, session-only edits, End dialog),
+  Resume or End for a running workout, Quick Timer, Settings and About, sound
+  and haptic cues, optional keep-awake, and an end-of-workout notification
+  that is requested in context and never required.
+
 ### Changed
 - Documentation only: roadmap now plans v0.2 (Three-F foundation) through v0.4,
   adds parallel research tracks and per-release exit criteria; competitive

@@ -28,7 +28,7 @@ unchanged. Nothing after v0.1 is implemented yet.
 | 2 | Timer engine | Reliable master countdown and intervals | **Done** |
 | 3 | Session state machine | Run, skip, edit, end, recover a workout | **Done** |
 | 4 | Weinke UI | Build, save, duplicate, share a workout | **Done** (device check pending) |
-| 5 | Live UI and device adapters | Run a workout on a phone, offline | Not started |
+| 5 | Live UI and device adapters | Run a workout on a phone, offline | **Done in code and on the iOS simulator** (physical devices pending) |
 | 6 | Quality assurance | Tested on real devices | Needs maintainer |
 | 7 | Beta release | TestFlight and Google Play internal testing | Needs maintainer |
 | 8 | Field validation | 3+ Qs lead real workouts | Needs maintainers and Qs |
@@ -197,6 +197,37 @@ Goal: run a real workout on a phone, offline.
 
 Exit gate: a real device runs and modifies a workout offline; denied
 permissions do not break the flow.
+
+**Status: built and tested; the gate itself still needs physical devices.**
+- Verified: unit and widget tests (including denied notifications and failing
+  platform services), and both integration flows on an iOS simulator with the
+  real database, run offline.
+- Not verified: any physical iPhone or Android phone, and any Android emulator
+  (no Android system image on the development machine). Lock screen,
+  silent switch and Focus, real notification delivery, and the screen-awake
+  lock are Phase 6 checks. Use
+  [process-kill-recovery.md](testing/process-kill-recovery.md).
+
+Notes from implementation:
+- `LiveScreen` runs a session through `LiveSession`. Leaving the screen never
+  ends the workout; Home offers **Resume** or **End workout**.
+- The 250 ms ticker only repaints. Cues play only when a phase change is seen
+  within 2 seconds; after a suspension the display jumps to the right phase and
+  nothing is replayed.
+- Next/Back pass the activity they were drawn for, so a stale or repeated tap
+  is ignored.
+- Cues use the system alert sound and haptics. They follow the phone's silent
+  and Focus settings; a loud alarm that overrides the ringer is not part of
+  v0.1 and remains an open investigation.
+- The end-of-workout notification is scheduled inexactly, with no exact-alarm
+  permission. The permission prompt appears once, when the first workout
+  starts.
+- Keep-screen-awake defaults to on and can be turned off in Settings. The spec
+  says "when the user has opted in"; confirm the default before beta.
+- Privacy and support links are shown as copyable text. Making them tappable
+  needs the `url_launcher` dependency and a license check.
+- The privacy policy in `docs/privacy/` is a draft that needs review before
+  store submission (Phase 7).
 
 ## Phase 6: Quality assurance (needs maintainer)
 

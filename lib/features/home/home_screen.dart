@@ -19,6 +19,16 @@ class HomeScreen extends ConsumerWidget {
         title: const Text('Q Helper'),
         actions: [
           IconButton(
+            tooltip: 'Quick timer',
+            icon: const Icon(Icons.timer_outlined),
+            onPressed: () => context.push('/quick'),
+          ),
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+          ),
+          IconButton(
             tooltip: 'Templates',
             icon: const Icon(Icons.view_agenda_outlined),
             onPressed: () => context.push('/templates'),

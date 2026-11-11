@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Asked for in context when a workout starts (Android 13+). The app
+         works fully if it is denied. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
         android:label="Q Helper"
         android:name="${applicationName}"

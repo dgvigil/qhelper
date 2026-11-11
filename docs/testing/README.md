@@ -23,4 +23,4 @@ fvm flutter test integration_test         # device-targeted (-d <device id>)
 ## Manual: process-kill and relaunch recovery
 
 Documented separately because it cannot be fully automated.
-See [process-kill-recovery.md](process-kill-recovery.md) (added in Phase 5).
+See [process-kill-recovery.md](process-kill-recovery.md).
