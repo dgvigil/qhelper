@@ -13,7 +13,7 @@ Each competitor capability has one of three evidence levels:
 
 | Level | Meaning |
 |---|---|
-| **Confirmed** | We installed and ran the app; version and date recorded |
+| **Confirmed** | A project member installed and ran the app; app version and date recorded |
 | **Advertised** | The developer's listing says so; unverified |
 | **Unknown** | Not stated on the listing, or not checked. **Not evidence that the feature is absent** |
 
@@ -35,7 +35,7 @@ Q Helper's candidate advantages, each to be validated: **Android** (planned),
 where competitors advertise features: **content library and Exicon**,
 **backblast**, **Apple Watch**, and **AI generation**.
 
-Recommendation: continue. Keep v0.1 narrow and reliable, make the Three-F
+Position: keep v0.1 narrow and reliable, make the Three-F
 foundation the focus of v0.2, and run P1 and P2 in parallel. Open the F3 Nation
 content-permission conversation now; it is only required for official Exicon
 integration, which is conditional and not a release dependency.
@@ -217,10 +217,10 @@ Applied in [roadmap.md](roadmap.md):
 7. P1 (this document's field testing) and P2 (Three-F discovery) run in parallel.
 8. A loud-alarm investigation remains a candidate for Phase 5 device-adapter work.
 
-## 10. Open questions for the maintainer
+## 10. Open questions
 
-- Do you want to contact either developer, and who leads that?
+- Should the project contact either developer, and who leads that?
 - Is Android-first messaging acceptable once P1 confirms the gap?
 - Scripture and quotations: reviewers agreed (see content policy). Who reviews
   the fellowship playbook?
-- Who will run P1 testing, and on which devices?
+- Who runs P1 testing, and on which devices?

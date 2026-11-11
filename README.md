@@ -46,6 +46,7 @@ store builds are produced only by the maintainer; see
 [docs/release/signing.md](docs/release/signing.md).
 
 Architecture decisions: [docs/architecture/decisions](docs/architecture/decisions).
+New to F3 terms such as Q, Weinke, or CoT? See the [glossary](docs/glossary.md).
 The product specification is [Q_Helper_v0.1_Open_Source_Spec.md](Q_Helper_v0.1_Open_Source_Spec.md).
 
 ## License

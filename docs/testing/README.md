@@ -20,6 +20,12 @@ fvm flutter test integration_test         # device-targeted (-d <device id>)
 - `integration_test/` — end-to-end flows on an iOS simulator and an Android
   emulator. Both platforms are required.
 
+- [simulator-guide.md](simulator-guide.md) — run and hand-check the app in the
+  iOS simulator or an Android emulator.
+- [device-matrix.md](device-matrix.md) and
+  [accessibility-checklist.md](accessibility-checklist.md) — physical-device
+  checks.
+
 ## Manual: process-kill and relaunch recovery
 
 Documented separately because it cannot be fully automated.

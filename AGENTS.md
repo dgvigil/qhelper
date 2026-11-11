@@ -119,6 +119,22 @@ These rules override the normal TDD workflow:
 - Treat official F3 content, trademarks, third-party content, and app-store licensing exceptions as legal-review dependencies; do not infer permission from public availability.
 - For physical-device tests or store distribution, explain prerequisites and request human action rather than claiming the agent completed them.
 
+## Documentation voice and audience
+
+Every document in this repository is written for **future contributors**: developers, designers, testers, and F3 members who have never met the maintainer and may know little about F3. It is not a log of a working session and not a note to the owner. When you write or edit a doc:
+
+- **Write for a stranger who wants to help.** Explain what a thing is, why it was decided, how to verify it, and where to look next. Link related docs with relative paths.
+- **Use third person for people and roles.** Write "the maintainer", "a reviewer", "a tester", never "you" for the owner and never "the user". Use "you" only when giving a contributor or end user an instruction ("run `fvm flutter test`").
+- **Keep personal details out.** Do not mention family members, friends, or named testers, private conversations, a developer's machine, home directory, or device. Describe roles ("two volunteer reviewers", "an iPhone tester") and record names only where a legal record requires it.
+- **Leave out session language.** No "as discussed", "per your request", "I did", "we agreed in chat", or references to an AI assistant or a conversation. State the decision, its date, and its reason instead; large decisions get an ADR in `docs/architecture/decisions`.
+- **Define F3 and domain terms** on first use or link [docs/glossary.md](docs/glossary.md). Write original definitions; do not copy Exicon, Q101, or other F3 text.
+- **Say what is verified and what is not.** Name the layer that was run (unit, widget, simulator, physical device) and mark anything unverified, as "not yet run on a physical device". Mark drafts that need legal or maintainer review.
+- **Date and scope decisions and limits.** Note what is out of scope, and what would change the decision.
+- **Keep one source of truth.** Update the existing document rather than adding a near-duplicate, and update links and the roadmap when a doc moves.
+- **Prefer short, scannable structure**: a purpose line, numbered steps for procedures, tables for matrices, and exact commands in code blocks.
+
+Self-check before finishing a doc: could a new contributor act on it without asking anyone? Does it avoid saying who the "we" or "you" is? Would anything in it embarrass or expose a private person?
+
 ## Agent handoff checklist
 
 Before saying a task or phase is done, report:

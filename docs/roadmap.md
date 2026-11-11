@@ -203,7 +203,7 @@ permissions do not break the flow.
   platform services), and both integration flows on an iOS simulator with the
   real database, run offline.
 - Not verified: any physical iPhone or Android phone, and any Android emulator
-  (no Android system image on the development machine). Lock screen,
+  (the original development machine had no Android system image). Lock screen,
   silent switch and Focus, real notification delivery, and the screen-awake
   lock are Phase 6 checks. Use
   [process-kill-recovery.md](testing/process-kill-recovery.md).
@@ -241,7 +241,7 @@ Goal: confidence on real hardware.
 | M6.4 Defect triage | No known release-blocking bugs |
 
 **Status.** Everything that can be done without a phone is done and written
-down. The physical-device runs are the maintainer's.
+down. The physical-device runs need people with phones; see the table below.
 
 | Milestone | State |
 |---|---|
@@ -370,7 +370,7 @@ Each item needs its own discovery and exit criteria before scheduling.
 |---|---|---|
 | Legal review of license exception and contribution terms | Maintainer | External contributions; Phase 7 |
 | F3 Nation / F3 Tech content-permission conversation | Maintainer | Official Exicon integration only; shapes the independence notice |
-| Content reviewers: scripture and quotes agreed (two family members); fellowship reviewer still open | Maintainer | v0.2 content release |
+| Content reviewers: scripture and quotes agreed (two volunteers); fellowship reviewer still open | Maintainer | v0.2 content release |
 | Recruit an Android beta tester | Maintainer | Phase 6 Android testing; Phase 7 Play internal test; Phase 8 |
 | Legal review of content licensing choices | Maintainer | v0.2 content release |
 | Apple Developer and Google Play accounts | Maintainer | Phase 7 |
@@ -378,16 +378,16 @@ Each item needs its own discovery and exit criteria before scheduling.
 | Privacy policy and support URLs | Maintainer | Phases 5 (About) and 7 |
 | Physical test devices | Maintainer | Phase 6 |
 
-## Maintainer decisions (2026-11-10)
+## Project decisions (2026-11-10)
 
 | Question | Decision |
 |---|---|
 | Is v0.1 the right first release? | Yes. v0.1 goes to TestFlight (and Play internal testing) for a small group of testers |
 | Backblast | Committed to match the other apps. Stays in v0.3 as already planned; the v0.1 scope and gate are not expanded. Moving it earlier would be a separate decision |
 | Faith content placement | In the main app, opt-in (default Off), with a disclaimer: F3 does not endorse any one religion; the author follows Jesus, so the scripture and quotations reflect that. See the [content policy](legal/content-policy.md) |
-| Scripture and quotation review | Two family members with long faith and leadership experience (the maintainer's brother and father) review them |
+| Scripture and quotation review | Two volunteer reviewers, each with many years in the faith and in leadership roles, review the scripture and quotations. See the [content policy](legal/content-policy.md) |
 | Platforms for the beta | Both iOS and Android together |
-| Beta testers | Maintainer (iPhone, later Apple Watch); the maintainer's brother (iPhone, F3 Q) |
+| Beta testers | The maintainer (iPhone, later Apple Watch) and one other F3 Q (iPhone). An Android tester is still needed |
 
 ## Open questions
 

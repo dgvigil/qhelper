@@ -85,12 +85,13 @@ Stored with the content package and summarized in
 5. Playbook: one reviewer who has run a fellowship event checks it is practical.
 6. Record reviewers and date in the provenance record.
 
-Reviewers: the maintainer's brother and father have agreed to review scripture
-and quotations; both have many years in the faith and leadership experience.
-Record reviewers by role or initials in provenance records, not full names.
-Because reviewers are family, the inclusivity check (step 4) should also be
-applied by someone outside the family, such as a P2 discovery participant. A
-playbook reviewer is still open (tracked in the [roadmap](../roadmap.md)).
+Reviewers: two volunteers have agreed to review scripture and quotations. Both
+have many years in the faith and in leadership roles. Record reviewers by role
+or initials in provenance records, not full names. Because the initial
+reviewers are close to the maintainer, the inclusivity check (step 4) should
+also be done by someone independent of them, such as a P2 discovery
+participant. A playbook reviewer is still open (tracked in the
+[roadmap](../roadmap.md)).
 
 ## Perspective disclosure
 

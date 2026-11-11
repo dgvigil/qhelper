@@ -50,6 +50,13 @@ Pull requests missing either will not be merged.
 New dependencies must be GPLv3-compatible, pinned to an exact version, and added
 to [docs/legal/third-party-licenses.md](docs/legal/third-party-licenses.md).
 
+## Documentation
+
+Docs are written for future contributors, not as session notes. Follow the
+"Documentation voice and audience" rules in [AGENTS.md](AGENTS.md): third person
+for people and roles, no private details, say what was verified and what was
+not, and link [docs/glossary.md](docs/glossary.md) for F3 terms.
+
 ## Conduct and security
 
 Follow the [Code of Conduct](CODE_OF_CONDUCT.md). Report vulnerabilities
