@@ -29,7 +29,7 @@ unchanged. Nothing after v0.1 is implemented yet.
 | 3 | Session state machine | Run, skip, edit, end, recover a workout | **Done** |
 | 4 | Weinke UI | Build, save, duplicate, share a workout | **Done** (device check pending) |
 | 5 | Live UI and device adapters | Run a workout on a phone, offline | **Done in code and on the iOS simulator** (physical devices pending) |
-| 6 | Quality assurance | Tested on real devices | Needs maintainer |
+| 6 | Quality assurance | Tested on real devices | **Automated work done; physical-device runs need maintainer** |
 | 7 | Beta release | TestFlight and Google Play internal testing | Needs maintainer |
 | 8 | Field validation | 3+ Qs lead real workouts | Needs maintainers and Qs |
 
@@ -239,6 +239,26 @@ Goal: confidence on real hardware.
 | M6.2 Documented behavior | What notifications and cues actually do, without promising exact delivery |
 | M6.3 Accessibility pass | Screen reader labels, text scaling, contrast |
 | M6.4 Defect triage | No known release-blocking bugs |
+
+**Status.** Everything that can be done without a phone is done and written
+down. The physical-device runs are the maintainer's.
+
+| Milestone | State |
+|---|---|
+| M6.1 Device matrix | Ready: [device-matrix.md](testing/device-matrix.md) (24 scenarios, iPhone and Android). **Not run.** Needs a physical iPhone and Android phone |
+| M6.2 Documented behavior | Written: [device-behavior.md](release/device-behavior.md). Items marked "to confirm" wait for the matrix |
+| M6.3 Accessibility pass | Automated checks run in CI (overflow at 2x text, tap targets, labels, contrast, countdown announcement). Manual VoiceOver and TalkBack pass: [accessibility-checklist.md](testing/accessibility-checklist.md), **not run** |
+| M6.4 Defect triage | [known-issues.md](release/known-issues.md): 4 defects found and fixed, no known release-blocking defects. Unknown until devices are tested |
+
+What the automated pass found and fixed: a one-hour countdown wrapped at large
+text, the interval panel header could overflow, "Add activity" did nothing in a
+workout with no segments, and turning the notification setting off did not
+cancel a scheduled one. New guards: a test that app code uses no networking
+libraries, and long-run timer tests (a full interval at 250 ms ticks, three
+hours of ticking).
+
+Exit for Phase 6: the matrix is complete on both platforms with no open
+release-blocking defects.
 
 ## Phase 7: Beta release (needs maintainer)
 

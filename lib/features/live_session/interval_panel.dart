@@ -47,7 +47,12 @@ class IntervalPanel extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Interval timer', style: theme.textTheme.labelLarge),
+              Flexible(
+                child: Text(
+                  'Interval timer',
+                  style: theme.textTheme.labelLarge,
+                ),
+              ),
               if (r.status == IntervalStatus.paused) const Text('Paused'),
             ],
           ),
@@ -57,12 +62,15 @@ class IntervalPanel extends StatelessWidget {
             textAlign: TextAlign.center,
             style: theme.textTheme.headlineMedium,
           ),
-          Text(
-            formatCountdown(r.remainingInPhase),
-            key: const Key('interval-time'),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.displayMedium?.copyWith(
-              fontFeatures: const [FontFeature.tabularFigures()],
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              formatCountdown(r.remainingInPhase),
+              key: const Key('interval-time'),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.displayMedium?.copyWith(
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
             ),
           ),
           Text(

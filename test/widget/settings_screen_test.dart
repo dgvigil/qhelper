@@ -53,6 +53,28 @@ void main() {
       expect(s.endNotificationEnabled, isFalse);
     });
 
+    testWidgets('turning the end notification off cancels a scheduled one', (
+      tester,
+    ) async {
+      await open(tester);
+      await tester.tap(
+        find.widgetWithText(SwitchListTile, 'End-of-workout notification'),
+      );
+      await tester.pumpAndSettle();
+      expect(app.notifications.cancels, 1);
+    });
+
+    testWidgets('turning the end notification on does not cancel anything', (
+      tester,
+    ) async {
+      await open(tester, const AppSettings(endNotificationEnabled: false));
+      await tester.tap(
+        find.widgetWithText(SwitchListTile, 'End-of-workout notification'),
+      );
+      await tester.pumpAndSettle();
+      expect(app.notifications.cancels, 0);
+    });
+
     testWidgets('explains that the phone can silence cues', (tester) async {
       await open(tester);
       expect(find.textContaining('silent and Focus'), findsOneWidget);

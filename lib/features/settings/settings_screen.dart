@@ -125,8 +125,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     'Asks for permission when you start a workout.',
                   ),
                   value: s.endNotificationEnabled,
-                  onChanged: (v) =>
-                      _save(s.copyWith(endNotificationEnabled: v)),
+                  onChanged: (v) {
+                    _save(s.copyWith(endNotificationEnabled: v));
+                    // Turning it off also withdraws one already scheduled.
+                    if (!v) {
+                      ref
+                          .read(endNotificationCoordinatorProvider)
+                          .sessionEnded();
+                    }
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.fromLTRB(16, 4, 16, 8),

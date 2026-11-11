@@ -273,7 +273,11 @@ class _LiveScreenState extends ConsumerState<LiveScreen>
                 enabled: current != null,
                 child: const Text('Edit this activity'),
               ),
-              const PopupMenuItem(value: 'add', child: Text('Add activity')),
+              PopupMenuItem(
+                value: 'add',
+                enabled: live.session.workingPlan.segments.isNotEmpty,
+                child: const Text('Add activity'),
+              ),
               PopupMenuItem(
                 value: 'remove',
                 enabled: current != null,
@@ -383,13 +387,19 @@ class _MasterCountdown extends StatelessWidget {
                 overtime ? 'OVERTIME' : 'Time remaining',
                 style: theme.textTheme.titleMedium?.copyWith(color: color),
               ),
-              Text(
-                text,
-                key: const Key('master-countdown'),
-                style: theme.textTheme.displayLarge?.copyWith(
-                  color: color,
-                  fontWeight: FontWeight.w700,
-                  fontFeatures: const [FontFeature.tabularFigures()],
+              // Shrinks instead of wrapping, so 1:00:00 stays on one line even
+              // at large text sizes.
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  text,
+                  key: const Key('master-countdown'),
+                  maxLines: 1,
+                  style: theme.textTheme.displayLarge?.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w700,
+                    fontFeatures: const [FontFeature.tabularFigures()],
+                  ),
                 ),
               ),
             ],

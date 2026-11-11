@@ -9,6 +9,8 @@ IntervalConfig config({int work = 40, int rest = 20, int rounds = 3}) =>
     IntervalConfig(work: s(work), rest: s(rest), rounds: rounds);
 
 void main() {
+  longRunTests();
+
   late FakeClock clock;
 
   setUp(() => clock = FakeClock());
@@ -179,6 +181,43 @@ void main() {
       clock.advance(s(60));
       final restored = IntervalTimer.fromJson(t.toJson(), clock);
       expect(restored.read().status, IntervalStatus.finished);
+    });
+  });
+}
+
+/// Long-run behavior: ticking every 250 ms like the screen does.
+void longRunTests() {
+  group('long run', () {
+    test('a full interval cues every phase exactly once at 250 ms ticks', () {
+      final clock = FakeClock();
+      final t = IntervalTimer(config(rounds: 10), clock)..start();
+      final cues = <IntervalCue>[];
+      for (var i = 0; i < 4 * (40 + 20) * 10 + 8; i++) {
+        final cue = t.observe().cue;
+        if (cue != null) cues.add(cue);
+        clock.advance(const Duration(milliseconds: 250));
+      }
+      expect(cues, [
+        for (var r = 1; r <= 10; r++) ...[
+          IntervalCue.workStart,
+          if (r < 10) IntervalCue.restStart,
+        ],
+        IntervalCue.finished,
+      ]);
+    });
+
+    test('hours of ticking stay consistent with the clock', () {
+      final clock = FakeClock();
+      final t = IntervalTimer(config(rounds: 1000), clock)..start();
+      for (var i = 0; i < 3 * 3600; i++) {
+        t.observe();
+        clock.advance(const Duration(seconds: 1));
+      }
+      // 3 h = 10800 s; each round is 60 s: 180 rounds done, round 181 begins.
+      final r = t.read();
+      expect(r.round, 181);
+      expect(r.phase, IntervalPhase.work);
+      expect(r.remainingInPhase, const Duration(seconds: 40));
     });
   });
 }

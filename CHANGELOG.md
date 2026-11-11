@@ -33,6 +33,13 @@ All notable changes are documented here. Format based on
   and haptic cues, optional keep-awake, and an end-of-workout notification
   that is requested in context and never required.
 
+- Phase 6 (automated part): accessibility and large-text tests for every
+  screen, long-run timer tests, an offline guard test, a device test matrix,
+  an accessibility checklist, device behavior notes, and a known-issues list.
+  Fixed: the one-hour countdown wrapping at large text, interval header
+  overflow, a dead "Add activity" item, and the end notification not being
+  cancelled when turned off.
+
 ### Changed
 - Documentation only: roadmap now plans v0.2 (Three-F foundation) through v0.4,
   adds parallel research tracks and per-release exit criteria; competitive
