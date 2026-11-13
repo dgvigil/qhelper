@@ -358,7 +358,7 @@ Exit criteria:
 
 ## Future backlog (unscheduled)
 
-- AI workout generation.
+- AI workout generation. A prototype (not a release) is described in [ADR-0004](architecture/decisions/0004-on-device-assistant-prototype.md): offline Exicon/Lexicon search on every phone, and an on-device model only on phones with about 8 GB of RAM. The F3 text and the model license are not cleared to ship.
 - Community synchronization.
 - From the earlier spec list: offline search, favorites, more templates, first-Q guidance, deterministic suggested plans, cadence assistance, structured plan import/export.
 

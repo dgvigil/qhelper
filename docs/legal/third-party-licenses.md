@@ -49,7 +49,38 @@ No GPL-incompatible or proprietary dependency was found.
 | drift_dev, build_runner (dev) | 2.35.2 / 2.17.1 | Code generation |
 | flutter_lints (dev) | 6.0.0 | Lints |
 
+## Added with the assistant prototype (2026-11-13)
+
+Direct packages added for [ADR-0004](../architecture/decisions/0004-on-device-assistant-prototype.md).
+Each LICENSE file was read. This is not a fresh count of every package in the
+lockfile.
+
+| Package | Version | License | GPLv3-compatible | Purpose |
+|---|---|---|---|---|
+| flutter_edge_ai | 2.6.0 | MIT | Yes | On-device model API |
+| flutter_edge_ai_litertlm | 1.20.0 | MIT | Yes | LiteRT-LM engine (the native runtime it downloads at build time is Apache-2.0) |
+| connectivity_plus | 7.3.2 | BSD-3 | Yes | Wi-Fi check before the model download |
+
+New transitive packages noticed in the same lockfile change: `background_downloader` (BSD), `large_file_handler` (MIT), `genai_primitives` and `json_schema_builder` (BSD), `decimal` and `rational` (Apache-2.0), `email_validator` (MIT), `mutex` (BSD). `nm` 0.6.0 is MPL-2.0, same situation as `dbus` above: pulled in for Linux network status, and the iOS and Android apps do not build that code into a store binary. No GPL-incompatible code license was seen in these LICENSE files.
+
+### Model weights (not a Dart package, not committed)
+
+TwIL-LM3-Pro and TwIL-LM3 are under the **webAI Non-Commercial License ver. 1.0**.
+That license limits use to non-commercial research and education. It is not
+compatible with the GPL's permission to use the work for any purpose, and it
+does not belong in a store build of Q Helper. The app downloads the INT4
+`.litertlm` file only when a Q asks, and the weights are gitignored.
+The base models (IBM Granite 4.2 for Pro, SmolLM3 for TwIL-LM3) are
+Apache-2.0; the fine-tunes are not.
+
+### Exercise and term text
+
+The bundled Codex database is F3 Nation text from `the-codex`, which has no
+license file. It is not GPL and is not cleared to ship. See the
+[content policy](content-policy.md).
+
 ## Assets
 
-No third-party fonts, images, or exercise content are bundled. The app icon is
-original and not covered by the GPL. See [licensing-policy.md](licensing-policy.md).
+No third-party fonts or images are bundled. The app icon is original and not
+covered by the GPL. The prototype Codex database is the exception described
+above. See [licensing-policy.md](licensing-policy.md).

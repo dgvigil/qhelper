@@ -12,9 +12,19 @@ is not affiliated with or endorsed by F3 Nation.
 
 ## What Q Helper collects
 
-**Nothing.** Q Helper has no accounts, no sign-in, no advertising, no analytics,
-and no crash reporting. It does not send information to GV5 Technologies LLC or
-anyone else, and it does not need an internet connection.
+**Nothing is sent to GV5 Technologies LLC.** Q Helper has no accounts, no
+sign-in, no advertising, no analytics, and no crash reporting. Workouts and
+exercise lookup work with no internet connection.
+
+The optional on-device assistant (a prototype, not part of a store release) is
+the one exception, and only after the Q chooses Download:
+
+- The phone downloads one model file, about 2.2 GB, from Hugging Face, and
+  only on Wi-Fi. That download reaches Hugging Face's servers. No account is
+  used. Workouts, names, and questions are not uploaded.
+- Questions are answered on the phone from the exercise list stored on the
+  phone.
+- Delete download removes the model file.
 
 ## What is stored on your device
 
