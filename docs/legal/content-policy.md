@@ -102,6 +102,16 @@ project, not endorsed by F3 Nation; faith content is optional and can be turned
 off at any time. Do not imply that F3 or other PAX hold these views. Wording is
 tested with P2 discovery participants before release.
 
+## Prototype Codex bundle (not cleared to ship)
+
+A prototype in this repository bundles exercise and term text from F3 Nation's
+[the-codex](https://github.com/F3-Nation/the-codex) so a phone can search it
+offline. That repository has no license file. The text is not covered by the
+GPL. Principle 5 still applies: this bundle must not ship in a release until
+written permission is recorded in `docs/legal/`. The import path and the
+refresh steps are in [tool/codex/README.md](../../tool/codex/README.md). The
+decision is [ADR-0004](../architecture/decisions/0004-on-device-assistant-prototype.md).
+
 ## Removal and takedown
 
 - Anyone may report a rights, accuracy, or inclusivity concern through the

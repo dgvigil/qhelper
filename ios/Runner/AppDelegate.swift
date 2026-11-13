@@ -12,5 +12,17 @@ import UIKit
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+    let channel = FlutterMethodChannel(
+      name: "com.gv5technologies.qhelper/device",
+      binaryMessenger: engineBridge.applicationRegistrar.messenger()
+    )
+    channel.setMethodCallHandler { call, result in
+      if call.method == "physicalMemory" {
+        // String, so an 8 GB value is not truncated to 32 bits.
+        result(String(ProcessInfo.processInfo.physicalMemory))
+      } else {
+        result(FlutterMethodNotImplemented)
+      }
+    }
   }
 }

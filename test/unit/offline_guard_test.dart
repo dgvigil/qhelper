@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-/// Q Helper is offline-first with no network services. This guard fails if app
-/// code starts importing networking libraries, so adding one is a deliberate,
-/// reviewed decision (see AGENTS.md and the privacy policy).
+/// Workouts and lookup stay offline. The only network feature is the optional
+/// on-device assistant download, which goes through `flutter_edge_ai` after a
+/// Wi-Fi check (`lib/data/assistant/`). This guard still fails if app code
+/// starts its own HTTP client or adds another networking package.
 void main() {
   test('app code does not use networking libraries', () {
     final banned = RegExp(

@@ -4,6 +4,10 @@ import 'package:q_helper/core/clock/app_clock.dart';
 import 'package:q_helper/core/platform/cue_service.dart';
 import 'package:q_helper/core/platform/end_notification_service.dart';
 import 'package:q_helper/core/platform/wakelock_service.dart';
+import 'package:q_helper/data/assistant/device_memory.dart';
+import 'package:q_helper/domain/assistant/device_capability.dart';
+import 'package:q_helper/domain/assistant/local_assistant.dart';
+import 'package:q_helper/domain/codex/codex_index.dart';
 import 'package:q_helper/domain/models/app_settings.dart';
 import 'package:q_helper/domain/models/workout_plan.dart';
 import 'package:q_helper/domain/models/workout_session.dart';
@@ -130,4 +134,29 @@ final endNotificationCoordinatorProvider = Provider<EndNotificationCoordinator>(
 /// The workout currently running, if any (offered as Resume on Home).
 final activeSessionProvider = FutureProvider<WorkoutSession?>(
   (ref) => ref.watch(sessionRepositoryProvider).findActive(),
+);
+
+final deviceMemoryProvider = Provider<DeviceMemory>(
+  (ref) => PlatformDeviceMemory(),
+);
+
+/// Total RAM, used only to show or hide the on-device assistant.
+final deviceProfileProvider = FutureProvider<DeviceProfile>((ref) async {
+  final bytes = await ref.watch(deviceMemoryProvider).readBytes();
+  return DeviceProfile(totalRamBytes: bytes);
+});
+
+/// Overridden in `main` with the bundled database.
+final codexIndexProvider = Provider<CodexIndex>(
+  (ref) => throw UnimplementedError('codexIndexProvider not overridden'),
+);
+
+/// Overridden in `main`. Tests use a fake so the model runtime is not loaded.
+final localAssistantProvider = Provider<LocalAssistant>(
+  (ref) => throw UnimplementedError('localAssistantProvider not overridden'),
+);
+
+/// Overridden in `main`. Tests use a fake so nothing is downloaded.
+final modelStoreProvider = Provider<ModelStore>(
+  (ref) => throw UnimplementedError('modelStoreProvider not overridden'),
 );

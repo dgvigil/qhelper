@@ -61,6 +61,7 @@ class HomeScreen extends ConsumerWidget {
         data: (list) => Column(
           children: [
             const _ResumeBanner(),
+            const _LookupTile(),
             Expanded(
               child: list.isEmpty
                   ? const _EmptyState()
@@ -73,34 +74,58 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
+class _LookupTile extends StatelessWidget {
+  const _LookupTile();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.menu_book_outlined),
+      title: const Text('Look up'),
+      subtitle: const Text('Exercises and terms, on this phone'),
+      onTap: () => context.push('/codex'),
+    );
+  }
+}
+
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'No workouts yet',
-              style: Theme.of(context).textTheme.headlineSmall,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'No workouts yet',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Plan the workout. Lead the men.',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    FilledButton(
+                      onPressed: () => context.push('/builder/new'),
+                      child: const Text('Create your first workout'),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Plan the workout. Lead the men.',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: () => context.push('/builder/new'),
-              child: const Text('Create your first workout'),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

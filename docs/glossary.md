@@ -27,7 +27,7 @@ with or endorsed by F3 Nation.
 | **Backblast** | A short written report of a workout, usually posted afterward. Planned for v0.3 |
 | **Coffeeteria** | An informal coffee gathering after a workout, part of fellowship |
 | **2nd F / 3rd F** | Fellowship and Faith |
-| **Exicon** | F3's glossary of exercises and terms. Its content is not bundled in Q Helper without written permission |
+| **Exicon** | F3's glossary of exercises. A prototype bundles it for offline lookup and is not cleared to ship; see the [content policy](legal/content-policy.md) |
 | **Q101** | F3 training material for new Qs. Not bundled in Q Helper without written permission |
 
 ## Project terms
